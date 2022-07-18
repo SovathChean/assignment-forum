@@ -16,5 +16,5 @@ public interface CommentVOMapper {
 
     CommentCreationDTO to(CommentCreationRequestVO commentCreationRequestVO);
     CommentResponseVO from(CommentDTO commentDTO);
-    List<CommentResponseVO> toList(CommentDTO commentDTO);
+    List<CommentResponseVO> toList(List<CommentDTO> commentDTO);
 }

@@ -10,4 +10,5 @@ public interface CommentService{
     CommentDTO createComment(CommentCreationDTO commentCreationDTO);
     List<CommentDTO> getAllCommentsByCreatorId(Long userId);
     List<CommentDTO> getAllCommentsByPostId(Long postId);
+    List<CommentDTO> getAllRepliesByParentId(Long parentId);
 }

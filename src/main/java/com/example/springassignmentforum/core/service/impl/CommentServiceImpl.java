@@ -24,4 +24,9 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentDTO> getAllCommentsByPostId(Long postId) {
         return null;
     }
+
+    @Override
+    public List<CommentDTO> getAllRepliesByParentId(Long parentId) {
+        return null;
+    }
 }
