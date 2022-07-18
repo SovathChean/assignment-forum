@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LikeCreationDTO {
-
     private Long postId;
     private Long userId;
-    private boolean like;
+    private Boolean isLike;
 }

@@ -10,14 +10,19 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="Likes")
 public class LikeModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
-    private UserModel user;
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
-    private PostModel post;
-    private boolean like;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @ManyToOne(targetEntity = UserModel.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "user_id")
+    private UserModel users;
+    @ManyToOne(targetEntity =  PostModel.class, cascade = CascadeType.MERGE, fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "post_id")
+    private PostModel posts;
+    private Boolean isLike;
     @Column(name="createdAt")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+
     private LocalDateTime createdAt;
 
     @Column(name="updatedAt")

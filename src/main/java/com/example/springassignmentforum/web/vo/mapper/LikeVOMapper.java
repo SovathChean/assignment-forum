@@ -16,6 +16,7 @@ public interface LikeVOMapper {
     public static final LikeVOMapper INSTANCE = Mappers.getMapper(LikeVOMapper.class);
 
     LikeCreationDTO to(LikeCreationRequestVO likeCreationRequestVO);
+
     LikeResponseVO from(LikeDTO likeDTO);
     List<LikeResponseVO> fromListProperty(List<LikeDTO> likeDTOList);
 }

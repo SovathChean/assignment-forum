@@ -11,26 +11,41 @@ import com.example.springassignmentforum.core.model.LikeModel;
 import com.example.springassignmentforum.core.model.PostLikeModel;
 import com.example.springassignmentforum.core.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
+@Service
 public class LikeServiceImpl implements LikeService {
-    @Autowired
+    @Autowired(required = false)
     private LikeDAO likeDAO;
-    @Autowired
+    @Autowired(required = false)
     private PostLikeDAO postLikeDAO;
     @Override
     public LikeDTO createLike(LikeCreationDTO likeCreationDTO) {
-        LikeDTO likeDTO = LikeMapper.INSTANCE.from(likeCreationDTO);
-        PostLikeDTO postLikeDTO = new PostLikeDTO();
-        Integer incrementlike = postLikeDTO.getLikes() + 1;
         Long postId = likeCreationDTO.getPostId();
-        postLikeDTO.setLikes(incrementlike);
-        postLikeDTO.setPostId(postId);
-        LikeModel likeModel = LikeMapper.INSTANCE.toProperty(likeDTO);
-        PostLikeModel postLikeModel = PostLikeMapper.INSTANCE.toProperty(postLikeDTO);
+        LikeDTO likeDTO = LikeMapper.INSTANCE.from(likeCreationDTO);
+        likeDTO.setCreatedAt(LocalDateTime.now());
+        PostLikeModel postLikeModel = postLikeDAO.findPostLikeByPostId(postId);
+        if (postLikeModel == null) {
+            PostLikeDTO postLikeDTO = new PostLikeDTO();
+            postLikeDTO.setLikes(1);
+            postLikeDTO.setPostId(postId);
+            postLikeModel = PostLikeMapper.INSTANCE.toProperty(postLikeDTO);
+        }
+        else
+        {
+            Integer incrementLike = postLikeModel.getLikes() + 1;
+            if(!likeCreationDTO.getIsLike())
+                incrementLike = postLikeModel.getLikes() - 1;
+            postLikeModel.setLikes(incrementLike);
+        }
 
+        LikeModel likeModel = LikeMapper.INSTANCE.toProperty(likeDTO);
         likeDAO.save(likeModel);
         postLikeDAO.save(postLikeModel);
 
         return null;
     }
+
 }

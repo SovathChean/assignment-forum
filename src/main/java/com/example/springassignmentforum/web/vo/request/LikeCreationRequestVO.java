@@ -6,5 +6,5 @@ import lombok.Data;
 public class LikeCreationRequestVO {
     private Long userId;
     private Long postId;
-    private boolean like;
+    private Boolean isLike;
 }

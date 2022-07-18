@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class LikeResponseVO {
     private Long id;
-    private UserModel user;
-    private PostModel post;
-    private boolean like;
+    private UserModel users;
+    private PostModel posts;
+    private Boolean isLike;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
