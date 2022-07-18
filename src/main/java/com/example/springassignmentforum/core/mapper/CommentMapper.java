@@ -12,14 +12,13 @@ import java.util.List;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CommentMapper {
-    public static  final CommentModel INSTANCE = Mappers.getMapper(CommentModel.class);
+    public static  final CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "users", ignore = true)
-    @Mapping(source = "postId", target = "post.id")
-    @Mapping(source = "parentId", target = "parent.id")
+    @Mapping(source = "postId", target = "posts.id")
+    @Mapping(source = "userId", target = "users.id")
     CommentDTO from(CommentCreationDTO commentCreationDTO);
     CommentModel toProperty(CommentDTO commentDTO);
     CommentDTO fromProperty(CommentModel commentModel);

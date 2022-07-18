@@ -1,6 +1,5 @@
 package com.example.springassignmentforum.web.vo.response;
 
-import com.example.springassignmentforum.core.model.CommentModel;
 import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.model.UserModel;
 import lombok.AllArgsConstructor;
@@ -12,13 +11,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentResponseVO {
+public class LikeResponseVO {
     private Long id;
-    private String message;
-    private UserModel users;
-    private PostModel posts;
-    private Long parentId;
+    private UserModel user;
+    private PostModel post;
+    private boolean like;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }

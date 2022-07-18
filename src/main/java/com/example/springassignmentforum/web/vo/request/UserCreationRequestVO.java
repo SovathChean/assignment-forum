@@ -10,7 +10,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
-@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class UserCreationRequestVO {
     @NotBlank
     @Size(min = 9, max = 10)

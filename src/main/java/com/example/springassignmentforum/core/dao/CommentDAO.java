@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentDAO extends JpaRepository<CommentModel, Long> {
 
     @Query(
-            value = "SELECT * FROM Comment WHERE user_id = :userId",
+            value = "SELECT * FROM Comments WHERE user_id = :userId",
             nativeQuery = true)
     List<CommentModel> findAllCommentByUserId(Long userId);
 

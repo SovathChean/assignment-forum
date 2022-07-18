@@ -2,7 +2,6 @@ package com.example.springassignmentforum.web.controller;
 
 import com.example.springassignmentforum.core.dto.CommentCreationDTO;
 import com.example.springassignmentforum.core.dto.CommentDTO;
-import com.example.springassignmentforum.core.mapper.CommentMapper;
 import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
 import com.example.springassignmentforum.web.vo.request.CommentCreationRequestVO;
@@ -25,7 +24,11 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<CommentResponseVO> createComment(@RequestBody CommentCreationRequestVO commentCreationRequestVO)
     {
+        Long userId = new Long(1); //getIdFromAuth
+        commentCreationRequestVO.setUserId(userId);
+        System.out.println(commentCreationRequestVO.toString());
         CommentCreationDTO commentCreationDTO = CommentVOMapper.INSTANCE.to(commentCreationRequestVO);
+        System.out.println(commentCreationDTO.toString());
         CommentDTO comment = commentService.createComment(commentCreationDTO);
         CommentResponseVO res = CommentVOMapper.INSTANCE.from(comment);
 
@@ -42,6 +45,13 @@ public class CommentController {
     public ResponseEntity<List<CommentResponseVO>> getReplies(@PathVariable("parentId") Long parentId)
     {
         List<CommentDTO> commentDTOList = commentService.getAllRepliesByParentId(parentId);
+
+        return ResponseEntity.ok(CommentVOMapper.INSTANCE.toList(commentDTOList));
+    }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<CommentResponseVO>> getCommentByUserId(@PathVariable("userId") Long userId)
+    {
+        List<CommentDTO> commentDTOList = commentService.getAllCommentsByCreatorId(userId);
 
         return ResponseEntity.ok(CommentVOMapper.INSTANCE.toList(commentDTOList));
     }

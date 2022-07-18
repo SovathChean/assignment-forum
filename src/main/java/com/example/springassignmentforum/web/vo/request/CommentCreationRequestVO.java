@@ -13,6 +13,6 @@ public class CommentCreationRequestVO {
     @NotEmpty
     private Long postId;
     @NotBlank
-    @NotEmpty
     private Long parentId;
+    private Long userId;
 }

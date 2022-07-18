@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentCreationDTO {
-    private String message;
+public class LikeCreationDTO {
+
     private Long postId;
-    private Long parentId;
     private Long userId;
+    private boolean like;
 }
