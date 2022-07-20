@@ -7,8 +7,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FileService {
-    void FileStorageService(Environment env);
+    void createFileDirectory(String folder);
     String getFileExtension(String fileName);
-    String storeFile(MultipartFile file);
-    List<FileModel> uploadFile(List<MultipartFile> file);
+    String storeFile(String folder, MultipartFile file);
+    List<FileModel> uploadListFile(List<MultipartFile> file);
+
+    FileModel getFileModel(Long id);
+
 }
