@@ -7,13 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostCreationDTO {
-    public String subject;
-    public String description;
-    public Long userId;
+public class PostCreationDTO
+{
+    private String subject;
+    private String description;
+    private Long userId;
+    private Long[] photos;
 }

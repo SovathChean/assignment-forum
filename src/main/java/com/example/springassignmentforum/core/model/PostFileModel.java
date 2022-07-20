@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name="PostFiles")
-public class PostFile {
+public class PostFileModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

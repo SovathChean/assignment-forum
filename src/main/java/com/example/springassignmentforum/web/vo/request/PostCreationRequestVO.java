@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.ForeignKey;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 
 @Data
@@ -19,4 +20,7 @@ public class PostCreationRequestVO {
     @NotBlank
     @NotEmpty
     private Long userId;
+    @NotEmpty
+    @NotBlank
+    private Long[] photos;
 }

@@ -14,5 +14,6 @@ public interface PostLikeMapper {
     @Mapping(target = "postId", source = "post.id")
     PostLikeDTO fromProperty(PostLikeModel postLikeModel);
     @Mapping(source = "postId", target = "post.id")
+    @Mapping(target = "id", ignore = true)
     PostLikeModel toProperty(PostLikeDTO postLikeDTO);
 }
