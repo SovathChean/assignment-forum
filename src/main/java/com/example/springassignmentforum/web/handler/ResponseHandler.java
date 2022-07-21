@@ -21,6 +21,7 @@ public class ResponseHandler {
         message = message != null? message : "Request successfully";
         map.put("message", message);
         map.put("data", responseObj);
+        map.put("success", true);
 
         return new ResponseEntity<Object>(map, status);
     }
@@ -28,6 +29,25 @@ public class ResponseHandler {
     {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("message", message);
+        map.put("success", true);
+
+        return new ResponseEntity<Object>(map, status);
+    }
+    public static ResponseEntity<Object> responseErrorWithObject(String message, HttpStatus status ,Object responseObj)
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        message = message != null? message : "Request Fail.";
+        map.put("message", message);
+        map.put("data", responseObj);
+        map.put("success", false);
+
+        return new ResponseEntity<Object>(map, status);
+    }
+    public static ResponseEntity<Object> responseErrorWithMsg(String message, HttpStatus status)
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("message", message);
+        map.put("success", false);
 
         return new ResponseEntity<Object>(map, status);
     }

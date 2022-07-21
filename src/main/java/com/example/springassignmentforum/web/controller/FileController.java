@@ -27,7 +27,7 @@ public class FileController {
     {
         List<FileModel> fileModels =  fileService.uploadListFile(fileCreationRequestVO.getFiles());
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, fileModels);
+        return ResponseHandler.responseWithObject("File have been upload.", HttpStatus.OK, fileModels);
     }
     @GetMapping(value="{id}")
     public ResponseEntity<Object> getFileById(@PathVariable("id") Long id) throws FileNotFoundException {

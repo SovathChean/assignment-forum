@@ -8,10 +8,8 @@ import com.example.springassignmentforum.core.dto.PostDTO;
 import com.example.springassignmentforum.core.dto.PostFileDTO;
 import com.example.springassignmentforum.core.mapper.PostFileMapper;
 import com.example.springassignmentforum.core.mapper.PostMapper;
-import com.example.springassignmentforum.core.model.FileModel;
 import com.example.springassignmentforum.core.model.PostFileModel;
 import com.example.springassignmentforum.core.model.PostModel;
-import com.example.springassignmentforum.core.service.FileService;
 import com.example.springassignmentforum.core.service.PostService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,7 +72,6 @@ public class PostServiceImpl implements PostService {
     public List<PostFileModel> getPostFileModel(Long postId, Long[] files)
     {
         List<PostFileDTO> postFileDTOs = new ArrayList<>();
-        System.out.println(files);
         for(Long fileId: files)
         {
             PostFileDTO postFileDTO = new PostFileDTO();

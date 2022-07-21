@@ -3,9 +3,11 @@ package com.example.springassignmentforum.web.controller;
 import com.example.springassignmentforum.core.dto.LikeCreationDTO;
 import com.example.springassignmentforum.core.dto.LikeDTO;
 import com.example.springassignmentforum.core.service.LikeService;
+import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.vo.mapper.LikeVOMapper;
 import com.example.springassignmentforum.web.vo.request.LikeCreationRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +27,6 @@ public class LikeController {
         System.out.println(likeCreationDTO.toString());
         LikeDTO likeDTO = likeService.createLike(likeCreationDTO);
 
-        return ResponseEntity.ok(likeDTO);
+        return ResponseHandler.responseWithMsg(null, HttpStatus.OK);
     }
 }
