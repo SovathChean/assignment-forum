@@ -1,5 +1,6 @@
 package com.example.springassignmentforum.core.service.impl;
 
+import com.example.springassignmentforum.core.common.filter.PageFilterResult;
 import com.example.springassignmentforum.core.dao.FileDAO;
 import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.PostFileDAO;
@@ -10,9 +11,15 @@ import com.example.springassignmentforum.core.mapper.PostFileMapper;
 import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.model.PostFileModel;
 import com.example.springassignmentforum.core.model.PostModel;
+import com.example.springassignmentforum.core.repository.PostRepository;
 import com.example.springassignmentforum.core.service.PostService;
 
+import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
@@ -28,7 +35,10 @@ public class PostServiceImpl implements PostService {
     @Autowired(required = false)
     private PostFileDAO postFileDAO;
     @Autowired(required = false)
+    private PostRepository postRepository;
+    @Autowired(required = false)
     private FileDAO fileDAO;
+
     @Override
     @Transactional(rollbackOn = Exception.class)
     public PostDTO createPost(PostCreationDTO postCreationDTO) {
@@ -50,6 +60,7 @@ public class PostServiceImpl implements PostService {
         return postDTO;
     }
 
+
     @Override
     public List<PostDTO> getAllPost() {
         var postDAOAll = postDAO.findAll();
@@ -69,6 +80,15 @@ public class PostServiceImpl implements PostService {
 
         return PostMapper.INSTANCE.fromListProperty(postModels);
     }
+
+    @Override
+    public Object getAllPostPaginated(PostFilterCriteria postFilterCriteria) {
+
+        Pageable paging = PageRequest.of(postFilterCriteria.getPageNo(), postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
+        System.out.println(postFilterCriteria);
+        return postRepository.filterResult(postFilterCriteria, paging);
+    }
+
     public List<PostFileModel> getPostFileModel(Long postId, Long[] files)
     {
         List<PostFileDTO> postFileDTOs = new ArrayList<>();
