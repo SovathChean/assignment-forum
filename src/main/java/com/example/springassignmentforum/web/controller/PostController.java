@@ -1,21 +1,26 @@
 package com.example.springassignmentforum.web.controller;
 
-import com.example.springassignmentforum.core.common.filter.FilterRequest;
-import com.example.springassignmentforum.core.common.utils.FilterUtils;
-import com.example.springassignmentforum.core.dao.PostDAO;
-import com.example.springassignmentforum.core.dto.PostCreationDTO;
-import com.example.springassignmentforum.core.dto.PostDTO;
+import com.example.springassignmentforum.core.common.filter.PageFilterResult;
+import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.core.service.PostService;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
+import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
+import com.example.springassignmentforum.web.vo.mapper.FileVOMapper;
 import com.example.springassignmentforum.web.vo.mapper.PostVOMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
+import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
+import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -23,9 +28,14 @@ import java.util.List;
 public class PostController {
     @Autowired
     private PostService postService;
-    public PostController(PostService postService)
+    @Autowired
+    private CommentService commentService;
+
+    public PostController(PostService postService, CommentService commentService)
     {
+
         this.postService = postService;
+        this.commentService = commentService;
     }
     @PostMapping
     public ResponseEntity<Object> createPost(@RequestBody PostCreationRequestVO postCreationRequestVO)
@@ -37,38 +47,32 @@ public class PostController {
 
         return ResponseHandler.responseWithObject("Create Post Successfully", HttpStatus.CREATED, postResponseVO);
     }
-    @GetMapping
-    public ResponseEntity<Object> getPost()
+    @GetMapping()
+    public ResponseEntity<Object> getAllPost(
+            @RequestParam(value="fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDateTime,
+            @RequestParam(value ="toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDateTime,
+            PostFilterCriteria postFilterCriteria)
     {
-        List<PostDTO> postDTOList = postService.getAllPost();
-        var res = PostVOMapper.INSTANCE.toList(postDTOList);
+
+        postFilterCriteria.setFromDateTime(this.convertStringToLocalDateTime(fromDateTime));
+        postFilterCriteria.setToDateTime(this.convertStringToLocalDateTime(toDateTime));
+        PageFilterResult<PostDTO> page = postService.getAllPost(postFilterCriteria);
+        PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.toList(page.getPageData()));
 
         return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
     }
-    @GetMapping("/paginated")
-    public ResponseEntity<Object> getPostPaginated(PostFilterCriteria postFilterCriteria)
-    {
-
-//        PostFilterCriteria postFilterCriteria = FilterUtils.createFilterCriteria(filterRequest, PostFilterCriteria.class);
-
-        Object res = postService.getAllPostPaginated(postFilterCriteria);
-
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
-    }
-//    @GetMapping("/seed-post/{photoId}")
-//    public ResponseEntity<Object> seedPost(@PathVariable(value = "photoId")Long photoId)
-//    {
-//
-//        Object res = postService.getAllPostPaginated(postFilterCriteria);
-//
-//        return ResponseHandler.responseWithObject(null, HttpStatus.OK, "res");
-//    }
     @GetMapping(value="/{id}")
     public ResponseEntity<Object> getPostById(@PathVariable(value="id") Long id)
     {
-        PostDTO postDTO = postService.getPostById(id);
+        PostDetailResponseVO postDetailResponseVO = new PostDetailResponseVO();
+        PostDetailDTO postDetail = postService.getPostDetail(id);
+        List<PostCommentDTO> postCommentDTO = commentService.getCommentByPostID(id);
+        List<PostFileImageDTO> postFileImageDTOS = postService.getPostFileImageByPostId(id);
+        postDetailResponseVO = PostVOMapper.INSTANCE.toPostDetail(postDetail);
+        postDetailResponseVO.setImages(FileVOMapper.INSTANCE.toListPostFile(postFileImageDTOS));
+        postDetailResponseVO.setComments(CommentVOMapper.INSTANCE.toListPostCommentResponse(postCommentDTO));
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, postDTO);
+        return ResponseHandler.responseWithObject(null, HttpStatus.OK, postDetailResponseVO);
     }
     @GetMapping(value="/creator/{userId}")
     public ResponseEntity<Object> getPostByCreatorId(@PathVariable(value="userId") Long userId)
@@ -76,5 +80,15 @@ public class PostController {
         List<PostDTO> postDTO = postService.getAllPostByCreatorId(userId);
 
         return ResponseHandler.responseWithObject(null, HttpStatus.OK, postDTO);
+    }
+    public LocalDateTime convertStringToLocalDateTime(String dateTime)
+    {
+        if(dateTime == null)
+            return null;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        LocalDateTime date = LocalDateTime.parse(dateTime, formatter);
+
+        return date;
     }
 }

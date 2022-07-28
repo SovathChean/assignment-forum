@@ -1,7 +1,9 @@
 package com.example.springassignmentforum.core.mapper;
 
 import com.example.springassignmentforum.core.dto.PostFileDTO;
+import com.example.springassignmentforum.core.dto.PostFileImageDTO;
 import com.example.springassignmentforum.core.model.PostFileModel;
+import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;

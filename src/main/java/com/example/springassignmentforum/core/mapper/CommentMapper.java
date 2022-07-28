@@ -2,7 +2,10 @@ package com.example.springassignmentforum.core.mapper;
 
 import com.example.springassignmentforum.core.dto.CommentCreationDTO;
 import com.example.springassignmentforum.core.dto.CommentDTO;
+import com.example.springassignmentforum.core.dto.PostCommentDTO;
 import com.example.springassignmentforum.core.model.CommentModel;
+import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
+import com.example.springassignmentforum.web.vo.response.PostCommentResponseVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;

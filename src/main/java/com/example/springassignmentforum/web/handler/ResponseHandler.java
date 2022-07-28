@@ -51,6 +51,7 @@ public class ResponseHandler {
 
         return new ResponseEntity<Object>(map, status);
     }
+
     public static ResponseEntity<Object> responseDownload(String folderPath, String fileName) throws FileNotFoundException {
 
         File file = new File(folderPath);

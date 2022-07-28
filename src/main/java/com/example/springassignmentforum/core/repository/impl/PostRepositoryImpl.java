@@ -2,6 +2,8 @@ package com.example.springassignmentforum.core.repository.impl;
 
 import com.example.springassignmentforum.core.common.filter.PageFilterResult;
 import com.example.springassignmentforum.core.dao.PostDAO;
+import com.example.springassignmentforum.core.dto.PostDTO;
+import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.repository.PostRepository;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,27 +23,47 @@ import java.util.List;
 public class PostRepositoryImpl implements PostRepository {
     @Autowired
     private PostDAO postDAO;
+
     @Override
-    public PageFilterResult<PostModel> filterResult(PostFilterCriteria postFilterCriteria, Pageable pageable) {
-         System.out.println(postFilterCriteria);
-         String subject = StringUtils.isNotBlank(postFilterCriteria.getSubject())? postFilterCriteria.getSubject(): null;
-         String description =StringUtils.isNotBlank(postFilterCriteria.getDescription())? postFilterCriteria.getDescription(): null;
-//         LocalDateTime fromTime = postFilterCriteria.getFromTime();
-//         LocalDateTime toTime = postFilterCriteria.getToTime();
-//         LocalDate fromDate = postFilterCriteria.getFromDate();
-//         LocalDate toDate = postFilterCriteria.getToDate();
+    public PageFilterResult<PostDTO> filterResult(PostFilterCriteria postFilterCriteria, Pageable pageable) {
+         String subject = StringUtils.isNotBlank(postFilterCriteria.getSubject())? postFilterCriteria.getSubject(): "";
+         String description =StringUtils.isNotBlank(postFilterCriteria.getDescription())? postFilterCriteria.getDescription(): "";
+         LocalDateTime fromDate = postFilterCriteria.getFromDateTime();
+         LocalDateTime toDate = postFilterCriteria.getToDateTime();
          List<PostModel> data = new ArrayList<>();
          Long totalRaw = (long) 0;
 
-         if(subject != null)
+         if(!subject.equals("") && !description.equals("") && fromDate != null && toDate != null )
          {
-             var page =  postDAO.findAllBySubjectStartingWith(subject, pageable);
+             var page =  postDAO.findAllBySubjectContainingIgnoreCaseOrDescriptionContainingIgnoreCaseOrCreatedAtBetween
+                     (subject, description, fromDate, toDate, pageable);
              data = page.getContent();
              totalRaw =page.getTotalElements();
          }
-         else if(description != null)
+         else if(!subject.equals(""))
          {
-             var page =  postDAO.findAllBySubjectStartingWith(subject, pageable);
+             var page =  postDAO.findAllBySubjectContainingIgnoreCase(subject, pageable);
+
+             data = page.getContent();
+             totalRaw =page.getTotalElements();
+         }
+         else if(!description.equals(""))
+         {
+             var page =  postDAO.findAllByDescriptionContainingIgnoreCase(description, pageable);
+
+             data = page.getContent();
+             totalRaw =page.getTotalElements();
+         }
+         else if(!subject.equals("") && !description.equals(""))
+         {
+             var page =  postDAO.findAllBySubjectContainingIgnoreCaseOrDescriptionContainingIgnoreCase(subject, description, pageable);
+
+             data = page.getContent();
+             totalRaw =page.getTotalElements();
+         }
+         else if(fromDate != null && toDate != null)
+         {
+             var page =  postDAO.findAllByCreatedAtBetween(fromDate, toDate, pageable);
              data = page.getContent();
              totalRaw =page.getTotalElements();
          }
@@ -50,7 +74,7 @@ public class PostRepositoryImpl implements PostRepository {
              totalRaw =page.getTotalElements();
          }
 
-        return new PageFilterResult<>(totalRaw, data);
+        return new PageFilterResult<>(totalRaw, PostMapper.INSTANCE.fromListProperty(data));
     }
 
 }

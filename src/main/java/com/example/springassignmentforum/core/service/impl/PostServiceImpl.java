@@ -1,32 +1,34 @@
 package com.example.springassignmentforum.core.service.impl;
 
 import com.example.springassignmentforum.core.common.filter.PageFilterResult;
+import com.example.springassignmentforum.core.dao.CommentDAO;
 import com.example.springassignmentforum.core.dao.FileDAO;
 import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.PostFileDAO;
-import com.example.springassignmentforum.core.dto.PostCreationDTO;
-import com.example.springassignmentforum.core.dto.PostDTO;
-import com.example.springassignmentforum.core.dto.PostFileDTO;
+import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.mapper.CommentMapper;
 import com.example.springassignmentforum.core.mapper.PostFileMapper;
 import com.example.springassignmentforum.core.mapper.PostMapper;
+import com.example.springassignmentforum.core.model.CommentModel;
 import com.example.springassignmentforum.core.model.PostFileModel;
 import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.repository.PostRepository;
 import com.example.springassignmentforum.core.service.PostService;
 
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
+import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
+import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import javax.transaction.Transactional;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -36,6 +38,8 @@ public class PostServiceImpl implements PostService {
     private PostFileDAO postFileDAO;
     @Autowired(required = false)
     private PostRepository postRepository;
+    @Autowired(required = false)
+    private CommentDAO commentDAO;
     @Autowired(required = false)
     private FileDAO fileDAO;
 
@@ -60,13 +64,6 @@ public class PostServiceImpl implements PostService {
         return postDTO;
     }
 
-
-    @Override
-    public List<PostDTO> getAllPost() {
-        var postDAOAll = postDAO.findAll();
-
-        return postDAOAll.stream().map(post -> PostMapper.INSTANCE.fromProperty(post)).collect(Collectors.toList());
-    }
     @Override
     public PostDTO getPostById(long id)
     {
@@ -80,12 +77,30 @@ public class PostServiceImpl implements PostService {
 
         return PostMapper.INSTANCE.fromListProperty(postModels);
     }
+    @Override
+    public PostDetailDTO getPostDetail(Long postId) {
+
+        return postDAO.findPostDetails(postId);
+    }
+    @Override
+    public List<PostFileImageDTO> getPostFileImageByPostId(Long postId) {
+        return postFileDAO.findFileDetailByPostId(postId);
+    }
 
     @Override
-    public Object getAllPostPaginated(PostFilterCriteria postFilterCriteria) {
+    public PageFilterResult<PostDTO> getAllPost(PostFilterCriteria postFilterCriteria) {
+        List<PostDTO> data = new ArrayList<>();
+        Long totalRow = (long) 0;
+        if(!postFilterCriteria.getPaginated())
+        {
+            data = PostMapper.INSTANCE.fromListProperty(postDAO.findAll());
+            totalRow = postDAO.count();
 
-        Pageable paging = PageRequest.of(postFilterCriteria.getPageNo(), postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
-        System.out.println(postFilterCriteria);
+            return new PageFilterResult<PostDTO>(totalRow, data);
+        }
+
+        Pageable paging = PageRequest.of(postFilterCriteria.getPageNo() - 1, postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
+
         return postRepository.filterResult(postFilterCriteria, paging);
     }
 

@@ -1,6 +1,7 @@
 package com.example.springassignmentforum.core.service.impl;
 
 import com.example.springassignmentforum.core.dao.FileDAO;
+import com.example.springassignmentforum.core.dto.PostFileImageDTO;
 import com.example.springassignmentforum.core.model.FileModel;
 import com.example.springassignmentforum.core.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,6 +90,7 @@ public class FileServiceImpl implements FileService {
 
         return file;
     }
+
 
 
 }

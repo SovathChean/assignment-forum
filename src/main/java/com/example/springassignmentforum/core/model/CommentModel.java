@@ -25,7 +25,6 @@ public class CommentModel {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name="createdAt")
     private LocalDateTime createdAt;
-
     @Column(name="updatedAt")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;

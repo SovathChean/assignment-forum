@@ -7,11 +7,15 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class FilterUtils {
     private static final Logger LOG = LoggerFactory.getLogger(FilterUtils.class);
     private static final ObjectMapper MAPPER = new ObjectMapper();
-
     public static <T extends BaseFilterCriteria> T createFilterCriteria(FilterRequest filterRequest, Class<T> searchClass)
     {
         String filterCriteriaString = StringUtils.isNotBlank(filterRequest.getFilterCriteriaString())

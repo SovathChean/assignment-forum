@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence/orm"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
+    http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
+    <!--   POST_QUERY -->
+    <named-native-query name="PostModel.findPostDetails" result-set-mapping="PostDetailMapping">
+        <query>
+            SELECT p.id, p.subject, p.description, user.name as creator,
+            CASE
+                 WHEN postLikes.likes IS NULL THEN 0
+                 ELSE likes
+            END AS likes
+            FROM Posts as p
+            LEFT JOIN Post_Likes as postLikes ON p.id = postLikes.post_id
+            LEFT JOIN Users as user ON p.user_id = user.id
+            WHERE p.id = :postId
+        </query>
+    </named-native-query>
+
+    <named-native-query name="CommentModel.findCommentsByPostId" result-set-mapping="PostCommentMapping">
+        <query>
+            SELECT c.id, c.created_at as createdAt, c.message, c.parent_id as parentId, u.name as creator
+            FROM Comments as c
+            JOIN Posts as p ON c.post_id = p.id AND c.post_id = :postId
+            JOIN Users as u ON c.user_id = u.id
+        </query>
+    </named-native-query>
+    <named-native-query name="PostFileModel.findFileDetailByPostId" result-set-mapping="PostFileMapping">
+        <query>
+            SELECT pFiles.id as fileId
+            FROM Post_Files as pFiles
+            JOIN Files as f ON pFiles.file_id = f.id AND f.is_used = 1
+            WHERE pFiles.post_id = :postId
+        </query>
+    </named-native-query>
+    <sql-result-set-mapping name="PostDetailMapping">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDetailDTO">
+            <column name="id" class="java.lang.Long"/>
+            <column name="subject" class="java.lang.String"/>
+            <column name="description" class="java.lang.String"/>
+            <column name="likes" class="java.lang.Integer"/>
+            <column name="creator" class="java.lang.String"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+    <sql-result-set-mapping name="PostCommentMapping">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostCommentDTO">
+            <column name="id" class="java.lang.Long"/>
+            <column name="message" class="java.lang.String"/>
+            <column name="parentId" class="java.lang.Long"/>
+            <column name="creator" class="java.lang.String"/>
+            <column name="createdAt" class="java.time.LocalDateTime"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+    <sql-result-set-mapping name="PostFileMapping">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostFileImageDTO">
+            <column name="fileId" class="java.lang.Long"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+
+</entity-mappings>
