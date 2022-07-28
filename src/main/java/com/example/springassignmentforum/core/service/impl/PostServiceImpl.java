@@ -19,6 +19,7 @@ import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -88,20 +89,24 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PageFilterResult<PostDTO> getAllPost(PostFilterCriteria postFilterCriteria) {
-        List<PostDTO> data = new ArrayList<>();
+    public PageFilterResult<PostPaginatedVO> getAllPost(PostFilterCriteria postFilterCriteria) {
+        List<PostPaginatedVO> data = new ArrayList<>();
+        System.out.println(postFilterCriteria);
         Long totalRow = (long) 0;
         if(!postFilterCriteria.getPaginated())
         {
-            data = PostMapper.INSTANCE.fromListProperty(postDAO.findAll());
+            data = PostMapper.INSTANCE.fromPostEntityToPaginatedResponse(postDAO.findAll());
             totalRow = postDAO.count();
 
-            return new PageFilterResult<PostDTO>(totalRow, data);
+            return new PageFilterResult<PostPaginatedVO>(totalRow, data);
         }
 
         Pageable paging = PageRequest.of(postFilterCriteria.getPageNo() - 1, postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
+        System.out.println(paging);
+        Page<PostPaginatedVO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), paging);
+        System.out.println(postDTOList);
 
-        return postRepository.filterResult(postFilterCriteria, paging);
+        return new PageFilterResult<>(postDTOList.getTotalElements(), postDTOList.getContent());
     }
 
     public List<PostFileModel> getPostFileModel(Long postId, Long[] files)

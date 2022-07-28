@@ -3,6 +3,7 @@ package com.example.springassignmentforum.web.vo.mapper;
 import com.example.springassignmentforum.core.dto.PostCreationDTO;
 import com.example.springassignmentforum.core.dto.PostDTO;
 import com.example.springassignmentforum.core.dto.PostDetailDTO;
+import com.example.springassignmentforum.core.dto.PostPaginatedVO;
 import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
@@ -26,4 +27,6 @@ public interface PostVOMapper {
 //    @Mapping(target = "images", ignore = true)
 //    @Mapping(target = "comments", ignore = true)
     PostDetailResponseVO toPostDetail(PostDetailDTO postDetailDTO);
+    List<PostPaginatedVO> toListPaginated(List<PostDTO> postDTOList);
+    List<PostResponseVO> fromPostPaginatedToPostResponseVO(List<PostPaginatedVO> postDTOList);
 }

@@ -56,8 +56,9 @@ public class PostController {
 
         postFilterCriteria.setFromDateTime(this.convertStringToLocalDateTime(fromDateTime));
         postFilterCriteria.setToDateTime(this.convertStringToLocalDateTime(toDateTime));
-        PageFilterResult<PostDTO> page = postService.getAllPost(postFilterCriteria);
-        PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.toList(page.getPageData()));
+        System.out.println(postFilterCriteria);
+        PageFilterResult<PostPaginatedVO> page = postService.getAllPost(postFilterCriteria);
+        PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
         return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
     }

@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 public class PostFilterCriteria extends BaseFilterCriteria {
     public static final String ORDER_BY_ID = "id";
     public String DEFAULT_ORDER_BY = ORDER_BY_ID;
-    private String subject;
-    private String description;
+    private String search;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime fromDateTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")

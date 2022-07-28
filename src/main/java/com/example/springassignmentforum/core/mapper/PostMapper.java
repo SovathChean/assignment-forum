@@ -2,16 +2,18 @@ package com.example.springassignmentforum.core.mapper;
 
 import com.example.springassignmentforum.core.dto.PostCreationDTO;
 import com.example.springassignmentforum.core.dto.PostDTO;
+import com.example.springassignmentforum.core.dto.PostPaginatedVO;
 import com.example.springassignmentforum.core.model.PostModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Collection;
 import java.util.List;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostMapper {
     public static final PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
     @Mapping(target = "id", ignore = true)
@@ -24,4 +26,5 @@ public interface PostMapper {
     PostDTO fromProperty(PostModel postModel);
 
     List<PostDTO> fromListProperty(Collection<PostModel> postModels);
+    List<PostPaginatedVO> fromPostEntityToPaginatedResponse(Collection<PostModel> postModels);
 }
