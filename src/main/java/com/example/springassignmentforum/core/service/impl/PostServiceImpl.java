@@ -17,7 +17,6 @@ import com.example.springassignmentforum.core.service.PostService;
 
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
-import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -97,14 +96,10 @@ public class PostServiceImpl implements PostService {
         {
             data = PostMapper.INSTANCE.fromPostEntityToPaginatedResponse(postDAO.findAll());
             totalRow = postDAO.count();
-
             return new PageFilterResult<PostPaginatedVO>(totalRow, data);
         }
-
         Pageable paging = PageRequest.of(postFilterCriteria.getPageNo() - 1, postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
-        System.out.println(paging);
         Page<PostPaginatedVO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), paging);
-        System.out.println(postDTOList);
 
         return new PageFilterResult<>(postDTOList.getTotalElements(), postDTOList.getContent());
     }
