@@ -8,7 +8,6 @@ plugins {
 	id 'com.diffplug.eclipse.apt' version '3.36.0'
 }
 
-//group = 'com.wingmoney'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 targetCompatibility = '11'
@@ -40,11 +39,13 @@ ext {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.0'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
 	implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:$mybatisVersion"
 	implementation 'org.springframework.security.oauth:spring-security-oauth2:2.5.2.RELEASE'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.security:spring-security-config:5.7.1'
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.7.0'
 	// postgres
 	implementation "org.postgresql:postgresql:$postgresqlVersion"
 
@@ -57,7 +58,7 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient'
 
 	// swagger
-	implementation "org.springdoc:springdoc-openapi-ui:$springdocVersion"
+//	implementation "org.springdoc:springdoc-openapi-ui:$springdocVersion"
 
 	// Java Bean mapper
 	implementation "org.mapstruct:mapstruct:$mapstructVersion"
@@ -90,9 +91,9 @@ configurations {
 		exclude group: 'org.apache.logging.log4j', module: 'log4j-to-slf4j'
 
 		//exclude spring security (only spring-security-oauth2)
-		exclude group: 'org.springframework.security', module: 'spring-security-web'
-		exclude group: 'org.springframework.security', module: 'spring-security-config'
-		exclude group: 'org.springframework.security', module: 'spring-security-jwt'
+//		exclude group: 'org.springframework.security', module: 'spring-security-web'
+//		exclude group: 'org.springframework.security', module: 'spring-security-config'
+//		exclude group: 'org.springframework.security', module: 'spring-security-jwt'
 	}
 }
 
