@@ -14,7 +14,6 @@ import java.util.Map;
 
 public class ResponseHandler {
 
-
     public static ResponseEntity<Object> responseWithObject(String message, HttpStatus status ,Object responseObj)
     {
         Map<String, Object> map = new HashMap<String, Object>();

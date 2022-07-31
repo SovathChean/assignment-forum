@@ -12,7 +12,6 @@ import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.model.CommentModel;
 import com.example.springassignmentforum.core.model.PostFileModel;
 import com.example.springassignmentforum.core.model.PostModel;
-import com.example.springassignmentforum.core.repository.PostRepository;
 import com.example.springassignmentforum.core.service.PostService;
 
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
@@ -37,8 +36,6 @@ public class PostServiceImpl implements PostService {
     @Autowired(required = false)
     private PostFileDAO postFileDAO;
     @Autowired(required = false)
-    private PostRepository postRepository;
-    @Autowired(required = false)
     private CommentDAO commentDAO;
     @Autowired(required = false)
     private FileDAO fileDAO;
@@ -46,7 +43,6 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional(rollbackOn = Exception.class)
     public PostDTO createPost(PostCreationDTO postCreationDTO) {
-
         PostDTO postDTO = PostMapper.INSTANCE.from(postCreationDTO);
         PostModel postModel = PostMapper.INSTANCE.toProperty(postDTO);
         postModel.setCreatedAt(LocalDateTime.now());
