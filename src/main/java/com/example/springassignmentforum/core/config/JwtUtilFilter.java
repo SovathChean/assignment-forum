@@ -38,7 +38,7 @@ public class JwtUtilFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         User user= (User) authResult.getPrincipal();
-        Map<String, String> tokens = new JwtCreateToken().createTokens(request, user);
+        Map<String, String> tokens = new JwtCreateToken().createTokens(request, user.getUsername());
         response.setContentType(APPLICATION_JSON_VALUE);
 
         new ObjectMapper().writeValue(response.getOutputStream(), tokens);

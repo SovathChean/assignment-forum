@@ -3,6 +3,7 @@ package com.example.springassignmentforum.web.controller;
 import com.example.springassignmentforum.core.dto.UserCreationDTO;
 import com.example.springassignmentforum.core.dto.UserDTO;
 import com.example.springassignmentforum.core.model.UserModel;
+import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.vo.mapper.UserVOMapper;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {

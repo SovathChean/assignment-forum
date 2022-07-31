@@ -10,4 +10,5 @@ public interface UserService {
 	UserDTO register(UserCreationDTO userCreationDTO);
 	UserDTO findById(Long id);
 	List<UserDTO> findAll();
+	UserDTO getUserByName(String name);
 }

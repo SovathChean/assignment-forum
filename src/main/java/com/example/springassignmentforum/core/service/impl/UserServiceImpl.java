@@ -51,6 +51,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
+	public UserDTO getUserByName(String name) {
+		System.out.println(name);
+		UserModel user = userDao.findUserByName(name);
+		System.out.println(user);
+
+		return UserMapper.INSTANCE.fromProperty(user);
+	}
+
+	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserModel userModel = userDao.findUserByName(username);
 		if(userModel == null)
