@@ -1,5 +1,6 @@
 package com.example.springassignmentforum.web.controller;
 
+import com.example.springassignmentforum.core.common.helper.JwtCreateToken;
 import com.example.springassignmentforum.core.dto.UserCreationDTO;
 import com.example.springassignmentforum.core.dto.UserDTO;
 import com.example.springassignmentforum.core.model.UserModel;
@@ -12,8 +13,13 @@ import com.example.springassignmentforum.web.vo.response.UserResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -22,19 +28,23 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
-    public UserController(UserService userService)
+    @Autowired
+    private AuthenticationService authenticationService;
+    public UserController(UserService userService, AuthenticationService authenticationService)
     {
         this.userService = userService;
+        this.authenticationService = authenticationService;
     }
 
     @RequestMapping(value="/api/register", method = RequestMethod.POST)
-    public ResponseEntity<Object> register(@RequestBody UserCreationRequestVO userCreationRequestVO)
+    public ResponseEntity<Object> register(HttpServletRequest request, HttpServletResponse httpRes, @RequestBody UserCreationRequestVO userCreationRequestVO)
     {
         UserCreationDTO userCreationDTO = UserVOMapper.INSTANCE.from(userCreationRequestVO);
         UserDTO register = userService.register(userCreationDTO);
         UserResponseVO response = UserVOMapper.INSTANCE.to(register);
+        Map<String, String> tokens = new JwtCreateToken().createTokens(request, response.getName());
 
-        return ResponseHandler.responseWithObject("Create User Successfully!", HttpStatus.CREATED, response);
+        return ResponseHandler.responseWithObject("Create User Successfully!", HttpStatus.CREATED, tokens);
     }
     @RequestMapping(value="/api/users/{id}", method = RequestMethod.GET)
     public ResponseEntity<Object> getUserById(@PathVariable(value="id") Long id)

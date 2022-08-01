@@ -52,11 +52,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 }catch (Exception e)
                 {
                     log.error("Error login : {}", e);
-                    response.setStatus(401);
                     Map<String, String> error = new HashMap<>();
-                    error.put("error", "AccessToken is invalid or expire");
+                    error.put("error", e.getMessage().toString());
                     response.setContentType(APPLICATION_JSON_VALUE);
-
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
             }else

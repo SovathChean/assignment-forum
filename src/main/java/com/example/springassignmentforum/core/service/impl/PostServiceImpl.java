@@ -42,7 +42,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(rollbackOn = Exception.class)
-    public PostDTO createPost(PostCreationDTO postCreationDTO) {
+    public PostDTO createPost(Long userId, PostCreationDTO postCreationDTO) {
         PostDTO postDTO = PostMapper.INSTANCE.from(postCreationDTO);
         PostModel postModel = PostMapper.INSTANCE.toProperty(postDTO);
         postModel.setCreatedAt(LocalDateTime.now());

@@ -7,13 +7,13 @@
     <named-native-query name="PostModel.findAllPostFilters" result-set-mapping="PostFilterMapping">
         <query>
             <![CDATA[
-                SELECT p.id, p.subject, p.description, p.created_at as createdAt, p.updated_at as updatedAt, user.name as creator
+                SELECT p.id, p.subject, p.description, p.created_at as createdAt, p.updated_at as updatedAt, u.name as creator
                 FROM Posts as p
-                JOIN Users user ON p.user_id = user.id
+                JOIN Users as u ON p.user_id = u.id
                 WHERE
                 CASE
                 WHEN :search IS NULL THEN 1
-                ELSE p.subject LIKE CONCAT(:search, '%') OR p.description LIKE  CONCAT(:search, '%')
+                ELSE p.subject LIKE CONCAT('%', :search, '%') OR p.description LIKE  CONCAT('%', :search, '%')
                 END AND
                 CASE
                 WHEN :fromDate IS NULL THEN 1

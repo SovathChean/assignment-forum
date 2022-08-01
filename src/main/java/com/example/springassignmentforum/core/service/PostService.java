@@ -8,7 +8,7 @@ import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import java.util.List;
 
 public interface PostService {
-    PostDTO createPost(PostCreationDTO postCreationDTO);
+    PostDTO createPost(Long userId, PostCreationDTO postCreationDTO);
 //    List<PostDTO> createPosts(List<PostCreationDTO> postCreationDTOS);
     PageFilterResult<PostPaginatedVO> getAllPost(PostFilterCriteria postFilterCriteria);
     PostDTO getPostById(long id);

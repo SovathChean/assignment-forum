@@ -24,7 +24,7 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
     @GetMapping(value="/api/refreshToken")
-    public ResponseEntity<Object> getAllUsers(HttpServletRequest request, HttpServletResponse response)
+    public ResponseEntity<Object> getRefreshToken(HttpServletRequest request, HttpServletResponse response)
     {
         Map<String, String> token = authenticationService.refreshToken(request, response);
 

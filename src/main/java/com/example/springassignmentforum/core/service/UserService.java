@@ -11,4 +11,5 @@ public interface UserService {
 	UserDTO findById(Long id);
 	List<UserDTO> findAll();
 	UserDTO getUserByName(String name);
+	UserDTO getAuthByName();
 }

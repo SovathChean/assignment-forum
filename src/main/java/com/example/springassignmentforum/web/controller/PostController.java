@@ -4,6 +4,7 @@ import com.example.springassignmentforum.core.common.filter.PageFilterResult;
 import com.example.springassignmentforum.core.dto.*;
 import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.core.service.PostService;
+import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
@@ -17,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,20 +33,22 @@ public class PostController {
     @Autowired
     private PostService postService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private CommentService commentService;
 
     public PostController(PostService postService, CommentService commentService)
     {
-
         this.postService = postService;
         this.commentService = commentService;
     }
     @PostMapping
     public ResponseEntity<Object> createPost(@RequestBody PostCreationRequestVO postCreationRequestVO)
     {
-
+        UserDTO userDTO = userService.getAuthByName();
+        postCreationRequestVO.setUserId(userDTO.getId());
         PostCreationDTO postCreationDTO = PostVOMapper.INSTANCE.from(postCreationRequestVO);
-        PostDTO postDTO = postService.createPost(postCreationDTO);
+        PostDTO postDTO = postService.createPost(userDTO.getId(), postCreationDTO);
         PostResponseVO postResponseVO = PostVOMapper.INSTANCE.to(postDTO);
 
         return ResponseHandler.responseWithObject("Create Post Successfully", HttpStatus.CREATED, postResponseVO);
@@ -56,7 +62,6 @@ public class PostController {
 
         postFilterCriteria.setFromDateTime(this.convertStringToLocalDateTime(fromDateTime));
         postFilterCriteria.setToDateTime(this.convertStringToLocalDateTime(toDateTime));
-        System.out.println(postFilterCriteria);
         PageFilterResult<PostPaginatedVO> page = postService.getAllPost(postFilterCriteria);
         PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
