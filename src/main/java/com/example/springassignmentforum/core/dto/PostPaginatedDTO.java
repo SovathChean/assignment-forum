@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostPaginatedVO {
+public class PostPaginatedDTO {
     public Long id;
     public String subject;
     public String description;

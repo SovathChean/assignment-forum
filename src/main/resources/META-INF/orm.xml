@@ -7,35 +7,39 @@
     <named-native-query name="PostModel.findAllPostFilters" result-set-mapping="PostFilterMapping">
         <query>
             <![CDATA[
-                SELECT p.id, p.subject, p.description, p.created_at as createdAt, p.updated_at as updatedAt, u.name as creator
+            SELECT p.id, p.subject, p.description, p.created_at as createdAt, p.updated_at as updatedAt, u.name as creator
                 FROM Posts as p
                 JOIN Users as u ON p.user_id = u.id
                 WHERE
                 CASE
-                WHEN :search IS NULL THEN 1
-                ELSE p.subject LIKE CONCAT('%', :search, '%') OR p.description LIKE  CONCAT('%', :search, '%')
+                    WHEN :search IS NULL THEN 1
+                    ELSE p.subject LIKE CONCAT('%', :search, '%') OR p.description LIKE  CONCAT('%', :search, '%')
                 END AND
                 CASE
-                WHEN :fromDate IS NULL THEN 1
-                ELSE p.created_at >= :fromDate
+                    WHEN :fromDate IS NULL THEN 1
+                    ELSE p.created_at >= :fromDate
                 END AND
                 CASE
-                WHEN :toDate IS NULL THEN 1
-                ELSE p.created_at <= :toDate
+                    WHEN :toDate IS NULL THEN 1
+                    ELSE p.created_at <= :toDate
+                END AND
+                CASE
+                 WHEN :creatorId IS NULL THEN 1
+                 ELSE p.user_id = :creatorId
                 END
             ]]>
         </query>
     </named-native-query>
     <named-native-query name="PostModel.findPostDetails" result-set-mapping="PostDetailMapping">
         <query>
-            SELECT p.id, p.subject, p.description, user.name as creator,
+            SELECT p.id, p.subject, p.description, u.name as creator,
             CASE
                  WHEN postLikes.likes IS NULL THEN 0
                  ELSE likes
             END AS likes
             FROM Posts as p
-            LEFT JOIN Post_Likes as postLikes ON p.id = postLikes.post_id
-            LEFT JOIN Users as user ON p.user_id = user.id
+                LEFT JOIN Post_Likes as postLikes ON p.id = postLikes.post_id
+                LEFT JOIN Users as u ON p.user_id = u.id
             WHERE p.id = :postId
         </query>
     </named-native-query>
@@ -52,12 +56,12 @@
         <query>
             SELECT pFiles.id as fileId
             FROM Post_Files as pFiles
-            JOIN Files as f ON pFiles.file_id = f.id AND f.is_used = 1
+            JOIN Files as fi ON pFiles.file_id = fi.id
             WHERE pFiles.post_id = :postId
         </query>
     </named-native-query>
     <sql-result-set-mapping name="PostFilterMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostPaginatedVO">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostPaginatedDTO">
             <column name="id" class="java.lang.Long"/>
             <column name="subject" class="java.lang.String"/>
             <column name="description" class="java.lang.String"/>

@@ -1,12 +1,9 @@
 package com.example.springassignmentforum.core.mapper;
 
-import com.example.springassignmentforum.core.dto.PostCreationDTO;
-import com.example.springassignmentforum.core.dto.PostDTO;
-import com.example.springassignmentforum.core.dto.PostPaginatedVO;
+import com.example.springassignmentforum.core.dto.*;
 import com.example.springassignmentforum.core.model.PostModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
@@ -26,5 +23,6 @@ public interface PostMapper {
     PostDTO fromProperty(PostModel postModel);
 
     List<PostDTO> fromListProperty(Collection<PostModel> postModels);
-    List<PostPaginatedVO> fromPostEntityToPaginatedResponse(Collection<PostModel> postModels);
+    List<PostPaginatedDTO> fromPostEntityToPaginatedResponse(Collection<PostModel> postModels);
+    PostDetailsDTO toPostDetails(PostDetailDTO postDetailDTO);
 }

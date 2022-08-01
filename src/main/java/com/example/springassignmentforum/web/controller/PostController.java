@@ -7,25 +7,18 @@ import com.example.springassignmentforum.core.service.PostService;
 import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
-import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
-import com.example.springassignmentforum.web.vo.mapper.FileVOMapper;
 import com.example.springassignmentforum.web.vo.mapper.PostVOMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
-import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 @RestController
 @RequestMapping(value="/api/posts")
@@ -59,10 +52,9 @@ public class PostController {
             @RequestParam(value ="toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDateTime,
             PostFilterCriteria postFilterCriteria)
     {
-
         postFilterCriteria.setFromDateTime(this.convertStringToLocalDateTime(fromDateTime));
         postFilterCriteria.setToDateTime(this.convertStringToLocalDateTime(toDateTime));
-        PageFilterResult<PostPaginatedVO> page = postService.getAllPost(postFilterCriteria);
+        PageFilterResult<PostPaginatedDTO> page = postService.getAllPost(postFilterCriteria);
         PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
         return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
@@ -70,22 +62,19 @@ public class PostController {
     @GetMapping(value="/{id}")
     public ResponseEntity<Object> getPostById(@PathVariable(value="id") Long id)
     {
-        PostDetailResponseVO postDetailResponseVO = new PostDetailResponseVO();
-        PostDetailDTO postDetail = postService.getPostDetail(id);
-        List<PostCommentDTO> postCommentDTO = commentService.getCommentByPostID(id);
-        List<PostFileImageDTO> postFileImageDTOS = postService.getPostFileImageByPostId(id);
-        postDetailResponseVO = PostVOMapper.INSTANCE.toPostDetail(postDetail);
-        postDetailResponseVO.setImages(FileVOMapper.INSTANCE.toListPostFile(postFileImageDTOS));
-        postDetailResponseVO.setComments(CommentVOMapper.INSTANCE.toListPostCommentResponse(postCommentDTO));
+        PostDetailsDTO postDetailsDTO = postService.getPostDetail(id);
+        PostDetailResponseVO postDetailResponseVO = PostVOMapper.INSTANCE.toPostDetail(postDetailsDTO);
 
         return ResponseHandler.responseWithObject(null, HttpStatus.OK, postDetailResponseVO);
     }
-    @GetMapping(value="/creator/{userId}")
-    public ResponseEntity<Object> getPostByCreatorId(@PathVariable(value="userId") Long userId)
+    @GetMapping(value="/creator")
+    public ResponseEntity<Object> getPostByCreatorId()
     {
-        List<PostDTO> postDTO = postService.getAllPostByCreatorId(userId);
+        UserDTO userDTO = userService.getAuthByName();
+        PageFilterResult<PostPaginatedDTO> page = postService.getAllPostByCreatorId(userDTO.getId());
+        PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, postDTO);
+        return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
     }
     public LocalDateTime convertStringToLocalDateTime(String dateTime)
     {

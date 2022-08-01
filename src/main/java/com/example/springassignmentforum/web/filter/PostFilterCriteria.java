@@ -17,6 +17,7 @@ public class PostFilterCriteria extends BaseFilterCriteria {
     public static final String ORDER_BY_ID = "id";
     public String DEFAULT_ORDER_BY = ORDER_BY_ID;
     private String search;
+    private Long creatorId;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private LocalDateTime fromDateTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")

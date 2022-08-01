@@ -6,16 +6,17 @@ import com.example.springassignmentforum.core.dao.FileDAO;
 import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.PostFileDAO;
 import com.example.springassignmentforum.core.dto.*;
-import com.example.springassignmentforum.core.mapper.CommentMapper;
 import com.example.springassignmentforum.core.mapper.PostFileMapper;
 import com.example.springassignmentforum.core.mapper.PostMapper;
-import com.example.springassignmentforum.core.model.CommentModel;
 import com.example.springassignmentforum.core.model.PostFileModel;
 import com.example.springassignmentforum.core.model.PostModel;
+import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.core.service.PostService;
 
+import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
-import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
+import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
+import com.example.springassignmentforum.web.vo.mapper.FileVOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +38,10 @@ public class PostServiceImpl implements PostService {
     private PostFileDAO postFileDAO;
     @Autowired(required = false)
     private CommentDAO commentDAO;
+    @Autowired(required = false)
+    private CommentService commentService;
+    @Autowired(required = false)
+    private UserService userService;
     @Autowired(required = false)
     private FileDAO fileDAO;
 
@@ -68,15 +73,30 @@ public class PostServiceImpl implements PostService {
         return PostMapper.INSTANCE.fromProperty(postModel);
     }
     @Override
-    public List<PostDTO> getAllPostByCreatorId(Long userId) {
+    public  PageFilterResult<PostPaginatedDTO> getAllPostByCreatorId(Long userId) {
         List<PostModel> postModels = postDAO.findAllPostByUser(userId);
+        UserDTO userDTO = userService.getAuthByName();
+        PostFilterCriteria postFilterCriteria = new PostFilterCriteria();
+        postFilterCriteria.setCreatorId(userDTO.getId());
+        postFilterCriteria.setFromDateTime(null);
+        postFilterCriteria.setToDateTime(null);
+        postFilterCriteria.setSearch(null);
+        postFilterCriteria.setPaginated(true);
+        PageFilterResult<PostPaginatedDTO> page = this.getAllPost(postFilterCriteria);
 
-        return PostMapper.INSTANCE.fromListProperty(postModels);
+        return page;
     }
     @Override
-    public PostDetailDTO getPostDetail(Long postId) {
+    public PostDetailsDTO getPostDetail(Long postId) {
+        PostDetailsDTO postDetailsDTO = new PostDetailsDTO();
+        PostDetailDTO postDetail = postDAO.findPostDetails(postId);
+        List<PostCommentDTO> postCommentDTO = commentService.getCommentByPostID(postId);
+        List<PostFileImageDTO> postFileImageDTOS = this.getPostFileImageByPostId(postId);
+        postDetailsDTO = PostMapper.INSTANCE.toPostDetails(postDetail);
+        postDetailsDTO.setImages(FileVOMapper.INSTANCE.toListPostFile(postFileImageDTOS));
+        postDetailsDTO.setComments(CommentVOMapper.INSTANCE.toListPostCommentResponse(postCommentDTO));
 
-        return postDAO.findPostDetails(postId);
+        return postDetailsDTO;
     }
     @Override
     public List<PostFileImageDTO> getPostFileImageByPostId(Long postId) {
@@ -84,18 +104,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PageFilterResult<PostPaginatedVO> getAllPost(PostFilterCriteria postFilterCriteria) {
-        List<PostPaginatedVO> data = new ArrayList<>();
+    public PageFilterResult<PostPaginatedDTO> getAllPost(PostFilterCriteria postFilterCriteria) {
+        List<PostPaginatedDTO> data = new ArrayList<>();
         System.out.println(postFilterCriteria);
         Long totalRow = (long) 0;
         if(!postFilterCriteria.getPaginated())
         {
             data = PostMapper.INSTANCE.fromPostEntityToPaginatedResponse(postDAO.findAll());
             totalRow = postDAO.count();
-            return new PageFilterResult<PostPaginatedVO>(totalRow, data);
+            return new PageFilterResult<PostPaginatedDTO>(totalRow, data);
         }
         Pageable paging = PageRequest.of(postFilterCriteria.getPageNo() - 1, postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
-        Page<PostPaginatedVO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), paging);
+        Page<PostPaginatedDTO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), postFilterCriteria.getCreatorId(), paging);
 
         return new PageFilterResult<>(postDTOList.getTotalElements(), postDTOList.getContent());
     }
