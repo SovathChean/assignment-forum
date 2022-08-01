@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostFileResponseVO {
     private Long fileId;
+    private String fileLink;
 }

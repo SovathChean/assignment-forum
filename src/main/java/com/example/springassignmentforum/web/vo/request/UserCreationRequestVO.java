@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -17,6 +18,7 @@ public class UserCreationRequestVO {
     private String phone;
 
     @NotBlank
+    @Column(unique = true)
     private String name;
     @NotBlank
     private String password;

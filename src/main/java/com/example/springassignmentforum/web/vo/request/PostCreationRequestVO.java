@@ -20,7 +20,5 @@ public class PostCreationRequestVO {
     @NotBlank
     @NotEmpty
     private Long userId;
-    @NotEmpty
-    @NotBlank
     private Long[] photos;
 }

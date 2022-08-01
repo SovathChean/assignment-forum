@@ -17,5 +17,4 @@ public class PostResponseVO {
     private String description;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private UserModel user;
 }

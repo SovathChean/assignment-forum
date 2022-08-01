@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostFileImageDTO {
     private Long fileId;
+    private String fileLink;
 }

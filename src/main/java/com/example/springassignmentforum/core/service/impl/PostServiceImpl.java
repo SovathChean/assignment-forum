@@ -18,6 +18,7 @@ import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
 import com.example.springassignmentforum.web.vo.mapper.FileVOMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +45,8 @@ public class PostServiceImpl implements PostService {
     private UserService userService;
     @Autowired(required = false)
     private FileDAO fileDAO;
+    @Autowired
+    private Environment env;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -51,11 +54,12 @@ public class PostServiceImpl implements PostService {
         PostDTO postDTO = PostMapper.INSTANCE.from(postCreationDTO);
         PostModel postModel = PostMapper.INSTANCE.toProperty(postDTO);
         postModel.setCreatedAt(LocalDateTime.now());
-        try
-        {
+        try {
             postDAO.save(postModel);
-            List<PostFileModel> postFileModels = this.getPostFileModel(postModel.getId(), postCreationDTO.getPhotos());
-            postFileDAO.saveAll(postFileModels);
+            if (postCreationDTO.getPhotos() != null) {
+                List<PostFileModel> postFileModels = this.getPostFileModel(postModel.getId(), postCreationDTO.getPhotos());
+                postFileDAO.saveAll(postFileModels);
+            }
         }
         catch (Exception e)
         {
@@ -100,7 +104,11 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public List<PostFileImageDTO> getPostFileImageByPostId(Long postId) {
-        return postFileDAO.findFileDetailByPostId(postId);
+        String localhost = env.getProperty("spring.pathLink");
+        String path = localhost+"/api/file/";
+        List<PostFileImageDTO> postFileImageDTOS = postFileDAO.findFileDetailByPostId(postId, path);
+
+        return postFileImageDTOS;
     }
 
     @Override
