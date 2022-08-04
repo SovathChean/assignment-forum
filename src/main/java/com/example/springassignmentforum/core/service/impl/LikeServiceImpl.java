@@ -1,6 +1,7 @@
 package com.example.springassignmentforum.core.service.impl;
 
 import com.example.springassignmentforum.core.dao.LikeDAO;
+import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.PostLikeDAO;
 import com.example.springassignmentforum.core.dto.CountPostDTO;
 import com.example.springassignmentforum.core.dto.LikeCreationDTO;
@@ -22,13 +23,15 @@ public class LikeServiceImpl implements LikeService {
     @Autowired(required = false)
     private LikeDAO likeDAO;
     @Autowired(required = false)
+    private PostDAO postDAO;
+    @Autowired(required = false)
     private PostLikeDAO postLikeDAO;
     @Override
     public LikeDTO createLike(LikeCreationDTO likeCreationDTO) {
         Long postId = likeCreationDTO.getPostId();
         LikeDTO likeDTO = LikeMapper.INSTANCE.from(likeCreationDTO);
         likeDTO.setCreatedAt(LocalDateTime.now());
-        PostLikeModel postLikeModel = postLikeDAO.findPostLikeByPostId(postId);
+        PostLikeModel postLikeModel = postLikeDAO.findByPostId(postId);
         //InitialLike
         if (postLikeModel == null) {
             PostLikeDTO postLikeDTO = new PostLikeDTO();
@@ -47,7 +50,9 @@ public class LikeServiceImpl implements LikeService {
             postLikeModel.setLikes(incrementLike);
         }
 
+
         LikeModel likeModel = LikeMapper.INSTANCE.toProperty(likeDTO);
+        likeModel.setPosts(postDAO.findById(postId).get());
         likeDAO.save(likeModel);
         postLikeDAO.save(postLikeModel);
 

@@ -11,6 +11,7 @@ import com.example.springassignmentforum.core.dto.UserDTO;
 import com.example.springassignmentforum.core.model.OAuthTokenModel;
 import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.UserService;
+import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired(required = false)
     private OAuthTokenDAO oAuthTokenDAO;
     @Override
-    public Map<String, String> refreshToken(HttpServletRequest request, HttpServletResponse response, String uniqueKey) {
+    public OAuthTokenResponseVO refreshToken(HttpServletRequest request, HttpServletResponse response, String uniqueKey) {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
+        OAuthTokenResponseVO oauthToken = new OAuthTokenResponseVO();
         Map<String, String> res = new HashMap<>();
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer "))
         {
@@ -43,7 +45,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 //HasRevokeToken
                 hasRevokeToken(decodedJWT.getClaim("tokenKey").asString());
                 UserDTO user = userService.getUserByName(username);
-                res = new JwtCreateToken().createTokens(request, user.getName(), uniqueKey);
+                oauthToken = new JwtCreateToken().createTokens(request, user.getName(), uniqueKey);
             }catch (Exception e)
             {
                 log.error("Error token : {}", e);
@@ -54,7 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         {
             res.put("error", "AccessToken is invalid or expire");
         }
-        return res;
+        return oauthToken;
     }
     @Override
     public void storeTokenUniqueKey(String unqiueKey, Boolean isRevoke)

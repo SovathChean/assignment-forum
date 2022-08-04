@@ -1,7 +1,9 @@
 package com.example.springassignmentforum.web.controller;
 
 import com.example.springassignmentforum.core.service.AuthenticationService;
+import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
+import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +27,13 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
     @GetMapping(value="/api/refreshToken")
-    public ResponseEntity<Object> getRefreshToken(HttpServletRequest request, HttpServletResponse response)
+    public ResponseEntity<ResponseDataUtils<OAuthTokenResponseVO>> getRefreshToken(HttpServletRequest request, HttpServletResponse response)
     {
         String uniqueKey = UUID.randomUUID().toString();
-        Map<String, String> token = authenticationService.refreshToken(request, response, uniqueKey);
+        OAuthTokenResponseVO token = authenticationService.refreshToken(request, response, uniqueKey);
         authenticationService.storeTokenUniqueKey(uniqueKey, false);
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, token);
+        return ResponseHandler.responseData(null, HttpStatus.OK, token);
     }
     @GetMapping(value="/api/logout")
     public ResponseEntity<Object> getLogout(HttpServletRequest request, HttpServletResponse response)

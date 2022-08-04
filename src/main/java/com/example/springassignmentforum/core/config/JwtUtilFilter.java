@@ -2,6 +2,7 @@ package com.example.springassignmentforum.core.config;
 
 import com.example.springassignmentforum.core.common.helper.JwtCreateToken;
 import com.example.springassignmentforum.core.service.AuthenticationService;
+import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,7 +36,7 @@ public class JwtUtilFilter extends UsernamePasswordAuthenticationFilter {
         User user= (User) authResult.getPrincipal();
         String uniqueKey = UUID.randomUUID().toString();
 
-        Map<String, String> tokens = new JwtCreateToken().createTokens(request, user.getUsername(), uniqueKey);
+        OAuthTokenResponseVO tokens = new JwtCreateToken().createTokens(request, user.getUsername(), uniqueKey);
         response.setContentType(APPLICATION_JSON_VALUE);
         authenticationService.storeTokenUniqueKey(uniqueKey, false);
 

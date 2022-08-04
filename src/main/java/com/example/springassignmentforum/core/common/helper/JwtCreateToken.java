@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.impl.AuthenticationServiceImpl;
+import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
@@ -21,7 +22,7 @@ public class JwtCreateToken {
     private final Integer refreshTokenLife = 10*60*24*60*1000;//60days
     private final Integer accessTokenLife = 10*60*1000; //10min
 
-    public Map<String, String> createTokens(HttpServletRequest request, String username, String uniqueKey)
+    public OAuthTokenResponseVO createTokens(HttpServletRequest request, String username, String uniqueKey)
     {
 
         Algorithm algorithm = JwtAlgorithm.encrptedAlgorithm();
@@ -38,9 +39,10 @@ public class JwtCreateToken {
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", access_token);
-        tokens.put("refreshToken", refresh_token);
-        return tokens;
+        OAuthTokenResponseVO oAuthTokenResponseVO = new OAuthTokenResponseVO();
+        oAuthTokenResponseVO.setAccessToken(access_token);
+        oAuthTokenResponseVO.setRefreshToken(refresh_token);
+
+        return oAuthTokenResponseVO;
     }
 }

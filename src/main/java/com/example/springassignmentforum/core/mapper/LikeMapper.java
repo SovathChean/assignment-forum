@@ -6,11 +6,12 @@ import com.example.springassignmentforum.core.model.LikeModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LikeMapper {
     public static final LikeMapper INSTANCE = Mappers.getMapper(LikeMapper.class);
     @Mapping(target = "id", ignore = true)

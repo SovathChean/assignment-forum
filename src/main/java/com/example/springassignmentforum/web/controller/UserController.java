@@ -5,9 +5,12 @@ import com.example.springassignmentforum.core.dto.UserCreationDTO;
 import com.example.springassignmentforum.core.dto.UserDTO;
 import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.UserService;
+import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
+import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
 import com.example.springassignmentforum.web.vo.mapper.UserVOMapper;
 import com.example.springassignmentforum.web.vo.request.UserCreationRequestVO;
+import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import com.example.springassignmentforum.web.vo.response.UserResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,30 +36,30 @@ public class UserController {
     }
 
     @RequestMapping(value="/api/register", method = RequestMethod.POST)
-    public ResponseEntity<Object> register(HttpServletRequest request, HttpServletResponse httpRes, @RequestBody UserCreationRequestVO userCreationRequestVO)
+    public ResponseEntity<ResponseDataUtils<OAuthTokenResponseVO>> register(HttpServletRequest request, HttpServletResponse httpRes, @RequestBody UserCreationRequestVO userCreationRequestVO)
     {
         UserCreationDTO userCreationDTO = UserVOMapper.INSTANCE.from(userCreationRequestVO);
         UserDTO register = userService.register(userCreationDTO);
         UserResponseVO response = UserVOMapper.INSTANCE.to(register);
         String uniqueKey = UUID.randomUUID().toString();
-        Map<String, String> tokens = new JwtCreateToken().createTokens(request, response.getName(), uniqueKey);
+        OAuthTokenResponseVO tokens = new JwtCreateToken().createTokens(request, response.getName(), uniqueKey);
         authenticationService.storeTokenUniqueKey(uniqueKey, false);
 
-        return ResponseHandler.responseWithObject("Create User Successfully!", HttpStatus.CREATED, tokens);
+        return ResponseHandler.responseData("Create User Successfully!", HttpStatus.CREATED, tokens);
     }
     @RequestMapping(value="/api/users/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getUserById(@PathVariable(value="id") Long id)
+    public ResponseEntity<ResponseDataUtils<UserResponseVO>> getUserById(@PathVariable(value="id") Long id)
     {
         UserDTO userDTO = userService.findById(id);
         UserResponseVO res = UserVOMapper.INSTANCE.to(userDTO);
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
+        return ResponseHandler.responseData(null, HttpStatus.OK, res);
     }
     @RequestMapping(value="/api/users", method = RequestMethod.GET)
-    public ResponseEntity<Object> getAllUsers()
+    public ResponseEntity<ResponseListDataUtils<UserResponseVO>> getAllUsers()
     {
         List<UserDTO> userDTO = userService.findAll();
         var res = UserVOMapper.INSTANCE.toList(userDTO);
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
+        return ResponseHandler.responseListData(null, HttpStatus.OK, res);
     }
 }

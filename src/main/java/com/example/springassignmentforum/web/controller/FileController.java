@@ -3,6 +3,7 @@ package com.example.springassignmentforum.web.controller;
 import com.example.springassignmentforum.core.model.FileModel;
 import com.example.springassignmentforum.core.service.FileService;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
+import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
 import com.example.springassignmentforum.web.vo.request.FileCreationRequestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,11 +24,11 @@ public class FileController {
         this.fileService = fileService;
     }
     @PostMapping
-    public ResponseEntity<Object> uploadFile(FileCreationRequestVO fileCreationRequestVO)
+    public ResponseEntity<ResponseListDataUtils<FileModel>> uploadFile(FileCreationRequestVO fileCreationRequestVO)
     {
         List<FileModel> fileModels =  fileService.uploadListFile(fileCreationRequestVO.getFiles());
 
-        return ResponseHandler.responseWithObject("File have been upload.", HttpStatus.OK, fileModels);
+        return ResponseHandler.responseListData("File have been upload.", HttpStatus.OK, fileModels);
     }
     @GetMapping(value="{id}")
     public ResponseEntity<Object> getFileById(@PathVariable("id") Long id) throws FileNotFoundException {

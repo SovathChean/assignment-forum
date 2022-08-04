@@ -6,7 +6,10 @@ import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.core.service.PostService;
 import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
+import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
+import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
+import com.example.springassignmentforum.web.handler.ResponsePageUtils;
 import com.example.springassignmentforum.web.vo.mapper.PostVOMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
@@ -36,7 +39,7 @@ public class PostController {
         this.commentService = commentService;
     }
     @PostMapping
-    public ResponseEntity<Object> createPost(@RequestBody PostCreationRequestVO postCreationRequestVO)
+    public ResponseEntity<ResponseDataUtils<PostResponseVO>> createPost(@RequestBody PostCreationRequestVO postCreationRequestVO)
     {
         UserDTO userDTO = userService.getAuthByName();
         postCreationRequestVO.setUserId(userDTO.getId());
@@ -44,10 +47,10 @@ public class PostController {
         PostDTO postDTO = postService.createPost(userDTO.getId(), postCreationDTO);
         PostResponseVO postResponseVO = PostVOMapper.INSTANCE.to(postDTO);
 
-        return ResponseHandler.responseWithObject("Create Post Successfully", HttpStatus.CREATED, postResponseVO);
+        return ResponseHandler.responseData("Create Post Successfully", HttpStatus.CREATED, postResponseVO);
     }
     @GetMapping()
-    public ResponseEntity<Object> getAllPost(
+    public ResponseEntity<ResponsePageUtils<PostResponseVO>> getAllPost(
             @RequestParam(value="fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDateTime,
             @RequestParam(value ="toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDateTime,
             PostFilterCriteria postFilterCriteria)
@@ -57,24 +60,24 @@ public class PostController {
         PageFilterResult<PostPaginatedDTO> page = postService.getAllPost(postFilterCriteria);
         PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
+        return ResponseHandler.responsePagination(null, HttpStatus.OK, res);
     }
     @GetMapping(value="/{id}")
-    public ResponseEntity<Object> getPostById(@PathVariable(value="id") Long id)
+    public ResponseEntity<ResponseDataUtils<PostDetailResponseVO>> getPostById(@PathVariable(value="id") Long id)
     {
         PostDetailsDTO postDetailsDTO = postService.getPostDetail(id);
         PostDetailResponseVO postDetailResponseVO = PostVOMapper.INSTANCE.toPostDetail(postDetailsDTO);
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, postDetailResponseVO);
+        return ResponseHandler.responseData(null, HttpStatus.OK, postDetailResponseVO);
     }
     @GetMapping(value="/creator")
-    public ResponseEntity<Object> getPostByCreatorId()
+    public ResponseEntity<ResponsePageUtils<PostResponseVO>> getPostByCreatorId()
     {
         UserDTO userDTO = userService.getAuthByName();
         PageFilterResult<PostPaginatedDTO> page = postService.getAllPostByCreatorId(userDTO.getId());
         PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
-        return ResponseHandler.responseWithObject(null, HttpStatus.OK, res);
+        return ResponseHandler.responsePagination(null, HttpStatus.OK, res);
     }
     public LocalDateTime convertStringToLocalDateTime(String dateTime)
     {

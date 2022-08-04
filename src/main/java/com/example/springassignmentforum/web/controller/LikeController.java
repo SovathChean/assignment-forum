@@ -32,9 +32,8 @@ public class LikeController {
         UserDTO userDTO = userService.getAuthByName();
         likeCreationRequestVO.setUserId(userDTO.getId());
         LikeCreationDTO likeCreationDTO = LikeVOMapper.INSTANCE.to(likeCreationRequestVO);
-        System.out.println(likeCreationDTO.toString());
         LikeDTO likeDTO = likeService.createLike(likeCreationDTO);
 
-        return ResponseHandler.responseWithMsg(null, HttpStatus.OK);
+        return ResponseHandler.responseWithMsg("Like creation successfully.", HttpStatus.OK);
     }
 }

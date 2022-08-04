@@ -25,7 +25,7 @@ public class CommentServiceImpl implements CommentService {
         commentModel.setCreatedAt(LocalDateTime.now());
         commentDAO.save(commentModel);
 
-        return commentDTO;
+        return CommentMapper.INSTANCE.fromProperty(commentModel);
     }
     @Override
     public List<PostCommentDTO> getCommentByPostID(Long postId) {
