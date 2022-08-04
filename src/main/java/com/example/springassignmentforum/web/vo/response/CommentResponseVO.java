@@ -15,8 +15,6 @@ import java.time.LocalDateTime;
 public class CommentResponseVO {
     private Long id;
     private String message;
-    private UserModel users;
-    private PostModel posts;
     private Long parentId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

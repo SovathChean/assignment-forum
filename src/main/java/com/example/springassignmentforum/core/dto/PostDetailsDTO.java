@@ -18,6 +18,7 @@ public class PostDetailsDTO {
     private String description;
     private Integer likes;
     private String creator;
+    private Boolean isLike;
     private List<PostFileResponseVO> images;
     private List<PostCommentResponseVO> comments;
     private LocalDateTime createdAt;

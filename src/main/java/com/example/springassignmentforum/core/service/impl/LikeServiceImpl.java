@@ -2,6 +2,7 @@ package com.example.springassignmentforum.core.service.impl;
 
 import com.example.springassignmentforum.core.dao.LikeDAO;
 import com.example.springassignmentforum.core.dao.PostLikeDAO;
+import com.example.springassignmentforum.core.dto.CountPostDTO;
 import com.example.springassignmentforum.core.dto.LikeCreationDTO;
 import com.example.springassignmentforum.core.dto.LikeDTO;
 import com.example.springassignmentforum.core.dto.PostLikeDTO;
@@ -11,6 +12,7 @@ import com.example.springassignmentforum.core.model.LikeModel;
 import com.example.springassignmentforum.core.model.PostLikeModel;
 import com.example.springassignmentforum.core.service.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -27,6 +29,7 @@ public class LikeServiceImpl implements LikeService {
         LikeDTO likeDTO = LikeMapper.INSTANCE.from(likeCreationDTO);
         likeDTO.setCreatedAt(LocalDateTime.now());
         PostLikeModel postLikeModel = postLikeDAO.findPostLikeByPostId(postId);
+        //InitialLike
         if (postLikeModel == null) {
             PostLikeDTO postLikeDTO = new PostLikeDTO();
             postLikeDTO.setLikes(1);
@@ -37,7 +40,10 @@ public class LikeServiceImpl implements LikeService {
         {
             Integer incrementLike = postLikeModel.getLikes() + 1;
             if(!likeCreationDTO.getIsLike())
+            {
                 incrementLike = postLikeModel.getLikes() - 1;
+                likeDTO.setIsLike(false);
+            }
             postLikeModel.setLikes(incrementLike);
         }
 
@@ -46,6 +52,12 @@ public class LikeServiceImpl implements LikeService {
         postLikeDAO.save(postLikeModel);
 
         return null;
+    }
+
+    @Override
+    public Boolean isLike(Long userId, Long postId) {
+
+        return (likeDAO.findLikeByUserIdAndPostId(userId, postId).getLikeCount() != 0) ;
     }
 
 }

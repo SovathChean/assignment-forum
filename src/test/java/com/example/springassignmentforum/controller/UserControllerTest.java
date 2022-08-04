@@ -35,7 +35,6 @@ public class UserControllerTest {
     private TestRestTemplate testRestTemplate;
     @Autowired
     private UserService userService;
-
     @LocalServerPort
     private int port;
 

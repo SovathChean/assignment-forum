@@ -17,6 +17,7 @@ public class PostDetailResponseVO {
     private String description;
     private Integer likes;
     private String creator;
+    private Boolean isLike;
     private List<PostFileResponseVO> images;
     private List<PostCommentResponseVO> comments;
 }
