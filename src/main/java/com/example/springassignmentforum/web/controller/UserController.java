@@ -3,7 +3,6 @@ package com.example.springassignmentforum.web.controller;
 import com.example.springassignmentforum.core.common.helper.JwtCreateToken;
 import com.example.springassignmentforum.core.dto.UserCreationDTO;
 import com.example.springassignmentforum.core.dto.UserDTO;
-import com.example.springassignmentforum.core.model.UserModel;
 import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
@@ -13,16 +12,13 @@ import com.example.springassignmentforum.web.vo.response.UserResponseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -42,7 +38,9 @@ public class UserController {
         UserCreationDTO userCreationDTO = UserVOMapper.INSTANCE.from(userCreationRequestVO);
         UserDTO register = userService.register(userCreationDTO);
         UserResponseVO response = UserVOMapper.INSTANCE.to(register);
-        Map<String, String> tokens = new JwtCreateToken().createTokens(request, response.getName());
+        String uniqueKey = UUID.randomUUID().toString();
+        Map<String, String> tokens = new JwtCreateToken().createTokens(request, response.getName(), uniqueKey);
+        authenticationService.storeTokenUniqueKey(uniqueKey, false);
 
         return ResponseHandler.responseWithObject("Create User Successfully!", HttpStatus.CREATED, tokens);
     }

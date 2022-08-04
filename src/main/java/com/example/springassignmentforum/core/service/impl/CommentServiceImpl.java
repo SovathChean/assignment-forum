@@ -10,6 +10,7 @@ import com.example.springassignmentforum.core.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDTO createComment(CommentCreationDTO commentCreationDTO) {
         CommentDTO commentDTO = CommentMapper.INSTANCE.from(commentCreationDTO);
         CommentModel commentModel = CommentMapper.INSTANCE.toProperty(commentDTO);
+        commentModel.setCreatedAt(LocalDateTime.now());
         commentDAO.save(commentModel);
 
         return commentDTO;

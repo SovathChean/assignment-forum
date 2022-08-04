@@ -7,4 +7,5 @@ import org.springframework.stereotype.Service;
 
 public interface LikeService {
     LikeDTO createLike(LikeCreationDTO likeCreationDTO);
+    Boolean isLike(Long userId, Long postId);
 }

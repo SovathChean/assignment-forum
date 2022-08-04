@@ -11,12 +11,14 @@ import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.model.PostFileModel;
 import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.service.CommentService;
+import com.example.springassignmentforum.core.service.LikeService;
 import com.example.springassignmentforum.core.service.PostService;
 
 import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import com.example.springassignmentforum.web.vo.mapper.CommentVOMapper;
 import com.example.springassignmentforum.web.vo.mapper.FileVOMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,7 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 public class PostServiceImpl implements PostService {
     @Autowired(required = false)
     private PostDAO postDAO;
@@ -43,6 +46,8 @@ public class PostServiceImpl implements PostService {
     private CommentService commentService;
     @Autowired(required = false)
     private UserService userService;
+    @Autowired(required = false)
+    private LikeService likeService;
     @Autowired(required = false)
     private FileDAO fileDAO;
     @Autowired
@@ -60,13 +65,15 @@ public class PostServiceImpl implements PostService {
                 List<PostFileModel> postFileModels = this.getPostFileModel(postModel.getId(), postCreationDTO.getPhotos());
                 postFileDAO.saveAll(postFileModels);
             }
+            log.info("post is created {}:", postModel);
         }
         catch (Exception e)
         {
+            log.error("Post creations is error {}:", e.getMessage());
             throw e;
         }
 
-        return postDTO;
+        return PostMapper.INSTANCE.fromProperty(postModel);
     }
 
     @Override
@@ -96,7 +103,9 @@ public class PostServiceImpl implements PostService {
         PostDetailDTO postDetail = postDAO.findPostDetails(postId);
         List<PostCommentDTO> postCommentDTO = commentService.getCommentByPostID(postId);
         List<PostFileImageDTO> postFileImageDTOS = this.getPostFileImageByPostId(postId);
+        Boolean postLikeCount = likeService.isLike(userService.getAuthByName().getId(), postId);
         postDetailsDTO = PostMapper.INSTANCE.toPostDetails(postDetail);
+        postDetailsDTO.setIsLike(postLikeCount);
         postDetailsDTO.setImages(FileVOMapper.INSTANCE.toListPostFile(postFileImageDTOS));
         postDetailsDTO.setComments(CommentVOMapper.INSTANCE.toListPostCommentResponse(postCommentDTO));
 
@@ -114,7 +123,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public PageFilterResult<PostPaginatedDTO> getAllPost(PostFilterCriteria postFilterCriteria) {
         List<PostPaginatedDTO> data = new ArrayList<>();
-        System.out.println(postFilterCriteria);
         Long totalRow = (long) 0;
         if(!postFilterCriteria.getPaginated())
         {
@@ -139,7 +147,7 @@ public class PostServiceImpl implements PostService {
             postFileDTO.setPostId(postId);
             postFileDTOs.add(postFileDTO);
         }
-
+        log.info("Get Store file");
         return PostFileMapper.INSTANCE.toListProperty(postFileDTOs);
     }
 }

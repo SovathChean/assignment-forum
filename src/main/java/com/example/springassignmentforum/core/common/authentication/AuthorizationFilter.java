@@ -5,8 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springassignmentforum.core.common.helper.JwtAlgorithm;
+import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +29,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
-
+    @Autowired
+    private AuthenticationService authenticationService;
+    public AuthorizationFilter(AuthenticationService authenticationService)
+    {
+        this.authenticationService = authenticationService;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader(AUTHORIZATION);
@@ -44,11 +51,21 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     JWTVerifier verifier = JWT.require(algorithm).build();
                     DecodedJWT decodedJWT = verifier.verify(token);
                     String username = decodedJWT.getSubject();
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new
-                            UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                    filterChain.doFilter(request, response);
-                    log.info("User is successfully login.");
+                    String uniqueKey = decodedJWT.getClaim("tokenKey").asString();
+                    if(!authenticationService.isRevoke(uniqueKey))
+                    {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new
+                                UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                        filterChain.doFilter(request, response);
+                        log.info("User is successfully login.");
+                    }
+                    else
+                    {
+                        filterChain.doFilter(request, response);
+                        log.info("User is already logout");
+                    }
+
                 }catch (Exception e)
                 {
                     log.error("Error login : {}", e);

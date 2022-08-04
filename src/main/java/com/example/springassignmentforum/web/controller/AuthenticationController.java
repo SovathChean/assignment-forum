@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping
@@ -26,8 +27,17 @@ public class AuthenticationController {
     @GetMapping(value="/api/refreshToken")
     public ResponseEntity<Object> getRefreshToken(HttpServletRequest request, HttpServletResponse response)
     {
-        Map<String, String> token = authenticationService.refreshToken(request, response);
+        String uniqueKey = UUID.randomUUID().toString();
+        Map<String, String> token = authenticationService.refreshToken(request, response, uniqueKey);
+        authenticationService.storeTokenUniqueKey(uniqueKey, false);
 
         return ResponseHandler.responseWithObject(null, HttpStatus.OK, token);
+    }
+    @GetMapping(value="/api/logout")
+    public ResponseEntity<Object> getLogout(HttpServletRequest request, HttpServletResponse response)
+    {
+        authenticationService.logout(request, response);
+
+        return ResponseHandler.responseWithMsg("Logout successfully", HttpStatus.OK);
     }
 }

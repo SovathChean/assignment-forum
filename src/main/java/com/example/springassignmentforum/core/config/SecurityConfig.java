@@ -1,7 +1,9 @@
 package com.example.springassignmentforum.core.config;
 
 import com.example.springassignmentforum.core.common.authentication.AuthorizationFilter;
+import com.example.springassignmentforum.core.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +22,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
+    @Autowired
+    private final AuthenticationService authenticationService;
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
@@ -27,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
     protected void configure(HttpSecurity http) throws Exception
     {
-        JwtUtilFilter jwtUtilFilter = new JwtUtilFilter(this.authenticationManager());
+        JwtUtilFilter jwtUtilFilter = new JwtUtilFilter(this.authenticationManager(), this.authenticationService);
         jwtUtilFilter.setFilterProcessesUrl("/api/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -39,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/register","/api/login").permitAll()
             .antMatchers("/api/**").authenticated();
         http.addFilter(jwtUtilFilter);
-        http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new AuthorizationFilter(this.authenticationService), UsernamePasswordAuthenticationFilter.class);
     }
     @Bean
     @Override
