@@ -63,7 +63,6 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                     else
                     {
                         filterChain.doFilter(request, response);
-                        log.info("User is already logout");
                     }
 
                 }catch (Exception e)

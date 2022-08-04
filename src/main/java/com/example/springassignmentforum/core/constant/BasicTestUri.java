@@ -5,7 +5,7 @@ public enum BasicTestUri {
     POST_URI("posts"),
     FILE_URI("file"),
     LIKE_URI("like"),
-    REGISER_URI("register"),
+    REGISTER_URI("register"),
     COMMENT("comments"),
     USER_URI("users");
     public final String label;
