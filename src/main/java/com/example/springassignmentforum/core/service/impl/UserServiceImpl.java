@@ -63,9 +63,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public UserDTO getAuthByName() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(auth.getPrincipal());
 		UserModel userModel = userDao.findUserByName(auth.getPrincipal().toString());
-		System.out.println(userModel);
 		return UserMapper.INSTANCE.fromProperty(userModel);
 	}
 

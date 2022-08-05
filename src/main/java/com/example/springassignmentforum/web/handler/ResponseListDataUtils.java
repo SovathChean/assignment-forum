@@ -12,5 +12,4 @@ import java.util.List;
 public class ResponseListDataUtils<T>{
     private List<T> data;
     private String message;
-
 }

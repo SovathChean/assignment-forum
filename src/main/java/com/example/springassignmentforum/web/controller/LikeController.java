@@ -27,7 +27,7 @@ public class LikeController {
         this.likeService = likeService;
     }
     @PostMapping
-    public ResponseEntity<Object> createLike(Authentication authResult,  @RequestBody LikeCreationRequestVO likeCreationRequestVO)
+    public ResponseEntity<Object> createLike( @RequestBody LikeCreationRequestVO likeCreationRequestVO)
     {
         UserDTO userDTO = userService.getAuthByName();
         likeCreationRequestVO.setUserId(userDTO.getId());

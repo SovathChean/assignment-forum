@@ -18,8 +18,6 @@ public class TestSubmitHelper<T, E> {
         TestRestTemplate testRestTemplate = new TestRestTemplate();
         var request = (body != null)? HttpHelper.getHttpEntity(body, auth) : HttpHelper.getHttpEntity(auth);
         var typeReference = new GenericClassHelper().getParameterizedTypeRef(ResponseDataUtils.class, classType);
-        System.out.println(endpoint);
-
         ResponseEntity<ResponseDataUtils<T>> response =
                 testRestTemplate.exchange(endpoint, method, request, typeReference);
 
@@ -30,7 +28,6 @@ public class TestSubmitHelper<T, E> {
         TestRestTemplate testRestTemplate = new TestRestTemplate();
         var request = (body != null)? HttpHelper.getHttpEntity(body, auth) : HttpHelper.getHttpEntity(auth);
         var typeReference = new GenericClassHelper().getParameterizedTypeRef(ResponseListDataUtils.class, classType);
-        System.out.println(endpoint);
         ResponseEntity<ResponseListDataUtils<T>> response =
                 testRestTemplate.exchange(endpoint, method, request, typeReference);
 

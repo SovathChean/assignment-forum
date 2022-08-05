@@ -1,9 +1,6 @@
 package com.example.springassignmentforum.controller;
 
-import com.example.springassignmentforum.SpringAssignmentForumApplication;
 import com.example.springassignmentforum.core.constant.BasicTestUri;
-import com.example.springassignmentforum.core.service.UserService;
-import com.example.springassignmentforum.helper.HttpHelper;
 import com.example.springassignmentforum.helper.TestSubmitHelper;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
@@ -11,15 +8,8 @@ import com.example.springassignmentforum.web.vo.request.UserCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import com.example.springassignmentforum.web.vo.response.UserResponseVO;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.ResolvableType;
 import org.springframework.http.*;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,13 +21,7 @@ public class UserControllerTest {
     private static final String Name = "NameTest";
     private static final String Phone = "092123123";
     private static final String Password = "123123123";
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-    @Autowired
-    private TestSubmitHelper testSubmitHelper;
-    @Autowired
-    private UserService userService;
-    private int port = 8080;
+    private final int port = 8080;
 
 //    @Test
     public void should_register()

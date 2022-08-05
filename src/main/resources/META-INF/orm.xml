@@ -14,7 +14,7 @@
                 WHERE
                 CASE
                     WHEN :search IS NULL THEN 1
-                    ELSE p.subject LIKE CONCAT('%', :search, '%') OR p.description LIKE  CONCAT('%', :search, '%')
+                    ELSE p.subject LIKE LOWER(concat(:search,'%')) OR p.description LIKE LOWER(concat(:search,'%'))
                 END AND
                 CASE
                     WHEN :fromDate IS NULL THEN 1

@@ -25,4 +25,5 @@ public interface PostMapper {
     List<PostDTO> fromListProperty(Collection<PostModel> postModels);
     List<PostPaginatedDTO> fromPostEntityToPaginatedResponse(Collection<PostModel> postModels);
     PostDetailsDTO toPostDetails(PostDetailDTO postDetailDTO);
+    List<PostModel> fromPostCreationToPostModel(List<PostCreationDTO> postCreationDTOS);
 }

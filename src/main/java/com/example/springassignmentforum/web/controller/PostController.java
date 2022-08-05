@@ -14,6 +14,7 @@ import com.example.springassignmentforum.web.vo.mapper.PostVOMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

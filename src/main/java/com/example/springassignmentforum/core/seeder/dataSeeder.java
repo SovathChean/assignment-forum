@@ -2,8 +2,11 @@ package com.example.springassignmentforum.core.seeder;
 
 import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.UserDAO;
+import com.example.springassignmentforum.core.dto.PostCreationDTO;
 import com.example.springassignmentforum.core.dto.UserCreationDTO;
+import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.mapper.UserMapper;
+import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.model.UserModel;
 import com.example.springassignmentforum.core.service.FileService;
 import com.example.springassignmentforum.core.service.UserService;
@@ -47,6 +50,25 @@ public class dataSeeder {
         List<UserModel> userModelList = UserMapper.INSTANCE.fromUserCreationToUserModel(userCreationDTOList);
         return args -> {
             userDAO.saveAll(userModelList);
+        };
+    }
+    @Bean
+    CommandLineRunner postSeederRunning(){
+        List<PostCreationDTO> postCreationDTOS = new ArrayList<>();
+        postCreationDTOS.add(new PostCreationDTO("Testing", "ForTesting", (long) 1, null));
+
+        for (int i = 0; i < 10; i++)
+        {
+            postCreationDTOS.add(new PostCreationDTO(
+                    "PostTesting"+i,
+                    "ForTesting"+i,
+                    (long) 1,
+                    null
+            ));
+        }
+        List<PostModel> postModels = PostMapper.INSTANCE.fromPostCreationToPostModel(postCreationDTOS);
+        return args -> {
+            postDAO.saveAll(postModels);
         };
     }
 //    @Bean

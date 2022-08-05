@@ -6,6 +6,8 @@ public enum BasicTestUri {
     FILE_URI("file"),
     LIKE_URI("like"),
     REGISTER_URI("register"),
+    LOGIN("login"),
+    REFRESH_TOKEN("refreshToken"),
     COMMENT("comments"),
     USER_URI("users");
     public final String label;
