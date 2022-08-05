@@ -29,13 +29,13 @@ public class JwtCreateToken {
         String access_token = JWT.create()
                 .withSubject(username)
                 .withClaim("tokenKey", uniqueKey)
-                .withExpiresAt(new Date(System.currentTimeMillis() + refreshTokenLife)) //10min
+                .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenLife)) //10min
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
         String refresh_token = JWT.create()
                 .withSubject(username)
                 .withClaim("tokenKey", uniqueKey)
-                .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenLife)) //60days
+                .withExpiresAt(new Date(System.currentTimeMillis() + refreshTokenLife)) //60days
                 .withIssuer(request.getRequestURL().toString())
                 .sign(algorithm);
 
