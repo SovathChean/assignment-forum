@@ -7,6 +7,7 @@ import com.example.springassignmentforum.core.service.impl.UserServiceImpl;
 import com.example.springassignmentforum.helper.TestSubmitHelper;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,9 @@ public class LikeControllerTest {
     private static final String LikeUri = BasicURI + BasicTestUri.LIKE_URI.label;
     private static final Boolean isLike = true;
     private static final Long postId = (long) 12;
+    private static final  Long creatorId = (long) 1;
     private final int port = 8080;
+    @Test
     public void should_create_like()
     {
         String url = String.format(LikeUri, port);
@@ -31,11 +34,9 @@ public class LikeControllerTest {
     }
     public LikeCreationDTO createLikeRequest()
     {
-        UserServiceImpl userService = new UserServiceImpl();
-        UserDTO userDTO = userService.getAuthByName();
         LikeCreationDTO likeCreationDTO = new LikeCreationDTO();
         likeCreationDTO.setIsLike(isLike);
-        likeCreationDTO.setUserId(userDTO.getId());
+        likeCreationDTO.setUserId(creatorId);
         likeCreationDTO.setPostId(postId);
 
         return likeCreationDTO;

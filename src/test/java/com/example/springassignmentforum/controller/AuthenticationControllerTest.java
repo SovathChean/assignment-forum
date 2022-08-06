@@ -5,7 +5,10 @@ import com.example.springassignmentforum.helper.TestSubmitHelper;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.vo.request.LoginCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,37 +22,24 @@ public class AuthenticationControllerTest {
 
     private final int port = 8080;
 
-
-    public void should_login()
-    {
-        String url = String.format(LoginURI, port);
-        LoginCreationRequestVO loginCreationRequestVO = new LoginCreationRequestVO();
-        loginCreationRequestVO.setUsername(username);
-        loginCreationRequestVO.setPassword(password);
-        ResponseEntity<ResponseDataUtils<Object>> response = new TestSubmitHelper<>()
-                .submitSingleDataResponse(url, loginCreationRequestVO, Object.class, HttpMethod.POST, false);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertNotNull(response.getBody().getData());
-    }
+    @Test
     public void should_refresh_token()
     {
         String url = String.format(RefreshTokenURI, port);
         ResponseEntity<ResponseDataUtils<OAuthTokenResponseVO>> response = new TestSubmitHelper<>()
-                .submitSingleDataResponse(url, null, OAuthTokenResponseVO.class, HttpMethod.POST, true);
+                .submitSingleDataResponse(url, null, OAuthTokenResponseVO.class, HttpMethod.GET, true);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertNotNull(response.getBody().getData());
         assertNotNull(response.getBody().getData().getRefreshToken());
         assertNotNull(response.getBody().getData().getAccessToken());
     }
-
+    @Test
     public void should_logout()
     {
         String url = String.format(RefreshTokenURI, port);
         ResponseEntity<ResponseDataUtils<Object>> response = new TestSubmitHelper<>()
-                .submitSingleDataResponse(url, null, Object.class, HttpMethod.POST, true);
+                .submitSingleDataResponse(url, null, Object.class, HttpMethod.GET, true);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 

@@ -9,6 +9,7 @@ import com.example.springassignmentforum.helper.TestSubmitHelper;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
 import com.example.springassignmentforum.web.vo.response.UserResponseVO;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,14 +22,16 @@ public class CommentControllerTest {
     private static final String CommentURI = BasicURI + BasicTestUri.COMMENT.label;
     private static final String message = "Comment!";
     private static final Long postId = (long) 12;
+    private static final  Long creatorId = (long) 1;
     private final int port = 8080;
+    @Test
     public void should_make_comment()
     {
         String url = String.format(CommentURI, port);
         CommentCreationDTO commentCreationDTO = createCommentRequest();
         ResponseEntity<ResponseDataUtils<CommentResponseVO>> response = new TestSubmitHelper<>()
                 .submitSingleDataResponse(url, commentCreationDTO, CommentResponseVO.class, HttpMethod.POST, true);
-        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
         assertNotNull(response.getBody().getData());
         assertEquals(message, response.getBody().getData().getMessage());
@@ -36,11 +39,9 @@ public class CommentControllerTest {
     }
     public CommentCreationDTO createCommentRequest()
     {
-        UserServiceImpl userService = new UserServiceImpl();
-        UserDTO userDTO = userService.getAuthByName();
         CommentCreationDTO commentCreationDTO = new CommentCreationDTO();
         commentCreationDTO.setMessage(message);
-        commentCreationDTO.setUserId(userDTO.getId());
+        commentCreationDTO.setUserId(creatorId);
         commentCreationDTO.setPostId(postId);
 
         return commentCreationDTO;
