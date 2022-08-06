@@ -3,7 +3,6 @@
                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence/orm
     http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd">
-
     <!--   POST_QUERY -->
     <named-native-query name="PostModel.findAllPostFilters" result-set-mapping="PostFilterMapping">
         <query>
@@ -14,7 +13,34 @@
                 WHERE
                 CASE
                     WHEN :search IS NULL THEN 1
-                    ELSE p.subject LIKE LOWER(concat(:search,'%')) OR p.description LIKE LOWER(concat(:search,'%'))
+                    ELSE LOWER(p.subject) LIKE LOWER(concat('%', :search,'%')) OR LOWER(p.description) LIKE LOWER(concat('%', :search,'%'))
+                END AND
+                CASE
+                    WHEN :fromDate IS NULL THEN 1
+                    ELSE p.created_at >= :fromDate
+                END AND
+                CASE
+                    WHEN :toDate IS NULL THEN 1
+                    ELSE p.created_at <= :toDate
+                END AND
+                CASE
+                 WHEN :creatorId IS NULL THEN 1
+                 ELSE p.user_id = :creatorId
+                END
+                LIMIT :pageSize OFFSET :offset
+            ]]>
+        </query>
+    </named-native-query>
+    <named-native-query name="PostModel.findTotalRowPostFilters" result-set-mapping="PostCountFilterMapping">
+        <query>
+            <![CDATA[
+            SELECT COUNT(*) as totalRow,
+                FROM Posts as p
+                JOIN Users as u ON p.user_id = u.id
+                WHERE
+                CASE
+                    WHEN :search IS NULL THEN 1
+                    ELSE LOWER(p.subject) LIKE LOWER(concat('%', :search,'%')) OR LOWER(p.description) LIKE LOWER(concat('%', :search,'%'))
                 END AND
                 CASE
                     WHEN :fromDate IS NULL THEN 1
@@ -80,6 +106,11 @@
             <column name="creator" class="java.lang.String"/>
             <column name="createdAt" class="java.time.LocalDateTime"/>
             <column name="updatedAt" class="java.time.LocalDateTime"/>
+        </constructor-result>
+    </sql-result-set-mapping>
+    <sql-result-set-mapping name="PostCountFilterMapping">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostCountFilterDto">
+            <column name="totalRow" class="java.lang.Long"/>
         </constructor-result>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="PostDetailMapping">

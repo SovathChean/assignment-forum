@@ -1,8 +1,10 @@
 package com.example.springassignmentforum.core.dao;
 
+import com.example.springassignmentforum.core.dto.PostCountFilterDto;
 import com.example.springassignmentforum.core.dto.PostDetailDTO;
 import com.example.springassignmentforum.core.dto.PostPaginatedDTO;
 import com.example.springassignmentforum.core.model.PostModel;
+import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,7 @@ public interface PostDAO extends JpaRepository<PostModel, Long> {
     @Query(nativeQuery = true)
     PostDetailDTO findPostDetails(Long postId);
     @Query(nativeQuery = true)
-    Page<PostPaginatedDTO> findAllPostFilters(String search, LocalDateTime fromDate, LocalDateTime toDate, Long creatorId, Pageable pageable);
-
+    List<PostPaginatedDTO> findAllPostFilters(String search, LocalDateTime fromDate, LocalDateTime toDate, Long creatorId, Integer pageSize, Integer offset);
+    @Query(nativeQuery = true)
+    PostCountFilterDto findTotalRowPostFilters(String search, LocalDateTime fromDate, LocalDateTime toDate, Long creatorId);
 }

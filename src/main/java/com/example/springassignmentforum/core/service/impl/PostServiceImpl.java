@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -131,13 +132,10 @@ public class PostServiceImpl implements PostService {
             totalRow = postDAO.count();
             return new PageFilterResult<PostPaginatedDTO>(totalRow, data);
         }
-        System.out.println(postFilterCriteria.getPageNo() - 1);
-        Pageable paging = PageRequest.of(postFilterCriteria.getPageNo() - 1, postFilterCriteria.getPageSize(), Sort.by(postFilterCriteria.getDEFAULT_ORDER_BY()));
-
-        Page<PostPaginatedDTO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), postFilterCriteria.getCreatorId(), paging);
-        System.out.println(postDTOList);
-
-        return new PageFilterResult<>(postDTOList.getTotalElements(), postDTOList.getContent());
+        Integer offset =( postFilterCriteria.getPageNo() - 1 ) * postFilterCriteria.getPageSize();
+        List<PostPaginatedDTO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), postFilterCriteria.getCreatorId(), postFilterCriteria.getPageSize(), offset);
+        PostCountFilterDto postCountFilterDto = postDAO.findTotalRowPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), postFilterCriteria.getCreatorId());
+        return new PageFilterResult<>(postCountFilterDto.getTotalRow(), postDTOList);
     }
 
     public List<PostFileModel> getPostFileModel(Long postId, Long[] files)

@@ -71,11 +71,19 @@ public class PostController {
 
         return ResponseHandler.responseData(null, HttpStatus.OK, postDetailResponseVO);
     }
-    @GetMapping(value="/creator")
-    public ResponseEntity<ResponsePageUtils<PostResponseVO>> getPostByCreatorId()
+    @GetMapping(value="/owner")
+    public ResponseEntity<ResponsePageUtils<PostResponseVO>> getPostByCreatorId(
+
+            @RequestParam(value="fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDateTime,
+            @RequestParam(value ="toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDateTime,
+            PostFilterCriteria postFilterCriteria
+    )
     {
         UserDTO userDTO = userService.getAuthByName();
-        PageFilterResult<PostPaginatedDTO> page = postService.getAllPostByCreatorId(userDTO.getId());
+        postFilterCriteria.setCreatorId(userDTO.getId());
+        postFilterCriteria.setFromDateTime(this.convertStringToLocalDateTime(fromDateTime));
+        postFilterCriteria.setToDateTime(this.convertStringToLocalDateTime(toDateTime));
+        PageFilterResult<PostPaginatedDTO> page = postService.getAllPost(postFilterCriteria);
         PageFilterResult<PostResponseVO> res = new PageFilterResult<>(page.getTotalRows(), PostVOMapper.INSTANCE.fromPostPaginatedToPostResponseVO(page.getPageData()));
 
         return ResponseHandler.responsePagination(null, HttpStatus.OK, res);
