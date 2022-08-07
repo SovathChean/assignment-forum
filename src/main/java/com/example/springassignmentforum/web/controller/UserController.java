@@ -1,8 +1,8 @@
 package com.example.springassignmentforum.web.controller;
 
 import com.example.springassignmentforum.core.common.helper.JwtCreateToken;
-import com.example.springassignmentforum.core.dto.UserCreationDTO;
-import com.example.springassignmentforum.core.dto.UserDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserCreationDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
 import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController

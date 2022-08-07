@@ -1,15 +1,11 @@
 package com.example.springassignmentforum.core.dao;
 
-import com.example.springassignmentforum.core.dto.PostCountFilterDto;
-import com.example.springassignmentforum.core.dto.PostDetailDTO;
-import com.example.springassignmentforum.core.dto.PostPaginatedDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostCountFilterDto;
+import com.example.springassignmentforum.core.dto.PostDTO.PostDetailDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostPaginatedDTO;
 import com.example.springassignmentforum.core.model.PostModel;
-import com.example.springassignmentforum.web.filter.PostFilterCriteria;
-import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

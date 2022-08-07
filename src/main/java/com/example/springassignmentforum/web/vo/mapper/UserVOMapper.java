@@ -1,8 +1,8 @@
 package com.example.springassignmentforum.web.vo.mapper;
 
 
-import com.example.springassignmentforum.core.dto.UserCreationDTO;
-import com.example.springassignmentforum.core.dto.UserDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserCreationDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
 import com.example.springassignmentforum.web.vo.request.UserCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.UserResponseVO;
 import org.mapstruct.Mapper;

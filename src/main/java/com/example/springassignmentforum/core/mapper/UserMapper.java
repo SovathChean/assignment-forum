@@ -1,7 +1,7 @@
 package com.example.springassignmentforum.core.mapper;
 
-import com.example.springassignmentforum.core.dto.UserCreationDTO;
-import com.example.springassignmentforum.core.dto.UserDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserCreationDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
 import com.example.springassignmentforum.core.model.UserModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

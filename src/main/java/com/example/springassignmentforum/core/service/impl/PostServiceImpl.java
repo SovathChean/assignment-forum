@@ -5,7 +5,7 @@ import com.example.springassignmentforum.core.dao.CommentDAO;
 import com.example.springassignmentforum.core.dao.FileDAO;
 import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.PostFileDAO;
-import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.dto.PostDTO.*;
 import com.example.springassignmentforum.core.mapper.PostFileMapper;
 import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.model.PostFileModel;
@@ -21,18 +21,12 @@ import com.example.springassignmentforum.web.vo.mapper.FileVOMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 
 @Service

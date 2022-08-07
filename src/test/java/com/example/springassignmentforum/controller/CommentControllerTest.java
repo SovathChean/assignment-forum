@@ -1,14 +1,10 @@
 package com.example.springassignmentforum.controller;
 
 import com.example.springassignmentforum.core.constant.BasicTestUri;
-import com.example.springassignmentforum.core.dto.CommentCreationDTO;
-import com.example.springassignmentforum.core.dto.UserDTO;
-import com.example.springassignmentforum.core.service.AuthenticationService;
-import com.example.springassignmentforum.core.service.impl.UserServiceImpl;
+import com.example.springassignmentforum.core.dto.commentDTO.CommentCreationDTO;
 import com.example.springassignmentforum.helper.TestSubmitHelper;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.vo.response.CommentResponseVO;
-import com.example.springassignmentforum.web.vo.response.UserResponseVO;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;

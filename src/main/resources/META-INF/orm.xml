@@ -99,7 +99,7 @@
 
     <!--   POST_MAPPING -->
     <sql-result-set-mapping name="PostFilterMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostPaginatedDTO">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDTO.PostPaginatedDTO">
             <column name="id" class="java.lang.Long"/>
             <column name="subject" class="java.lang.String"/>
             <column name="description" class="java.lang.String"/>
@@ -109,12 +109,12 @@
         </constructor-result>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="PostCountFilterMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostCountFilterDto">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDTO.PostCountFilterDto">
             <column name="totalRow" class="java.lang.Long"/>
         </constructor-result>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="PostDetailMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDetailDTO">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDTO.PostDetailDTO">
             <column name="id" class="java.lang.Long"/>
             <column name="subject" class="java.lang.String"/>
             <column name="description" class="java.lang.String"/>
@@ -123,7 +123,7 @@
         </constructor-result>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="PostCommentMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostCommentDTO">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDTO.PostCommentDTO">
             <column name="id" class="java.lang.Long"/>
             <column name="message" class="java.lang.String"/>
             <column name="parentId" class="java.lang.Long"/>
@@ -132,13 +132,13 @@
         </constructor-result>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="PostFileMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostFileImageDTO">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDTO.PostFileImageDTO">
             <column name="fileId" class="java.lang.Long"/>
             <column name="fileLink" class="java.lang.String"/>
         </constructor-result>
     </sql-result-set-mapping>
     <sql-result-set-mapping name="CountPostLikeMapping">
-        <constructor-result target-class="com.example.springassignmentforum.core.dto.CountPostDTO">
+        <constructor-result target-class="com.example.springassignmentforum.core.dto.PostDTO.CountPostDTO">
             <column name="likeCount" class="java.lang.Integer"/>
         </constructor-result>
     </sql-result-set-mapping>

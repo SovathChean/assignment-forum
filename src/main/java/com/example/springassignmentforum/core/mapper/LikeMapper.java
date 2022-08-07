@@ -1,11 +1,10 @@
 package com.example.springassignmentforum.core.mapper;
 
-import com.example.springassignmentforum.core.dto.LikeCreationDTO;
-import com.example.springassignmentforum.core.dto.LikeDTO;
+import com.example.springassignmentforum.core.dto.likeDTO.LikeCreationDTO;
+import com.example.springassignmentforum.core.dto.likeDTO.LikeDTO;
 import com.example.springassignmentforum.core.model.LikeModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 

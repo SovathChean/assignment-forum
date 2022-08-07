@@ -1,11 +1,7 @@
 package com.example.springassignmentforum.core.dao;
 
-import com.example.springassignmentforum.core.dto.PostCommentDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostCommentDTO;
 import com.example.springassignmentforum.core.model.CommentModel;
-import com.example.springassignmentforum.core.model.PostModel;
-import com.example.springassignmentforum.web.vo.response.PostCommentResponseVO;
-import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

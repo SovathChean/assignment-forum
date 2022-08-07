@@ -1,4 +1,4 @@
-package com.example.springassignmentforum.core.dto;
+package com.example.springassignmentforum.core.dto.PostDTO;
 
 import com.example.springassignmentforum.web.vo.response.PostCommentResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;

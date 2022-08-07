@@ -1,7 +1,8 @@
 package com.example.springassignmentforum.web.controller;
 
 import com.example.springassignmentforum.core.common.filter.PageFilterResult;
-import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.dto.PostDTO.*;
+import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
 import com.example.springassignmentforum.core.mapper.PostImageMapper;
 import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.core.service.PostService;
@@ -16,10 +17,8 @@ import com.example.springassignmentforum.web.vo.mapper.PostVOMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
 import com.example.springassignmentforum.web.vo.request.PostUploadImageRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
-import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostUploadImageResponseVO;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;

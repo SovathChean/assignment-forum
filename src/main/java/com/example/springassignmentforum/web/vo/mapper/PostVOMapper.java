@@ -1,6 +1,9 @@
 package com.example.springassignmentforum.web.vo.mapper;
 
-import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.dto.PostDTO.PostCreationDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostDetailsDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostPaginatedDTO;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;

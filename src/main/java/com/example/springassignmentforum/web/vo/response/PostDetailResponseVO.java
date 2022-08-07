@@ -1,7 +1,5 @@
 package com.example.springassignmentforum.web.vo.response;
 
-import com.example.springassignmentforum.core.dto.PostCommentDTO;
-import com.example.springassignmentforum.core.dto.PostFileImageDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

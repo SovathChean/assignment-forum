@@ -1,8 +1,8 @@
 package com.example.springassignmentforum.core.service;
 
-import com.example.springassignmentforum.core.dto.CommentCreationDTO;
-import com.example.springassignmentforum.core.dto.CommentDTO;
-import com.example.springassignmentforum.core.dto.PostCommentDTO;
+import com.example.springassignmentforum.core.dto.commentDTO.CommentCreationDTO;
+import com.example.springassignmentforum.core.dto.commentDTO.CommentDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostCommentDTO;
 
 
 import java.util.List;

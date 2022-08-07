@@ -1,7 +1,6 @@
 package com.example.springassignmentforum.controller;
 
 import com.example.springassignmentforum.core.constant.BasicTestUri;
-import com.example.springassignmentforum.core.dto.PostUploadImageDTO;
 import com.example.springassignmentforum.helper.TestSubmitHelper;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseListDataUtils;

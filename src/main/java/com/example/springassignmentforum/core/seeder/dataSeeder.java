@@ -2,8 +2,8 @@ package com.example.springassignmentforum.core.seeder;
 
 import com.example.springassignmentforum.core.dao.PostDAO;
 import com.example.springassignmentforum.core.dao.UserDAO;
-import com.example.springassignmentforum.core.dto.PostCreationDTO;
-import com.example.springassignmentforum.core.dto.UserCreationDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostCreationDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserCreationDTO;
 import com.example.springassignmentforum.core.mapper.PostMapper;
 import com.example.springassignmentforum.core.mapper.UserMapper;
 import com.example.springassignmentforum.core.model.PostModel;
@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

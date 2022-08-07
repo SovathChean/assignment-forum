@@ -1,5 +1,7 @@
-package com.example.springassignmentforum.core.dto;
+package com.example.springassignmentforum.core.dto.likeDTO;
 
+import com.example.springassignmentforum.core.model.PostModel;
+import com.example.springassignmentforum.core.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,11 +12,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostPaginatedDTO {
-    public Long id;
-    public String subject;
-    public String description;
-    private String creator;
+public class LikeDTO {
+    private Long id;
+    private PostModel posts;
+    private UserModel users;
+    private Boolean isLike;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

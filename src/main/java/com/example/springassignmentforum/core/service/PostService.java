@@ -1,8 +1,7 @@
 package com.example.springassignmentforum.core.service;
 
 import com.example.springassignmentforum.core.common.filter.PageFilterResult;
-import com.example.springassignmentforum.core.dto.*;
-import com.example.springassignmentforum.core.model.PostFileModel;
+import com.example.springassignmentforum.core.dto.PostDTO.*;
 import com.example.springassignmentforum.web.filter.PostFilterCriteria;
 
 import java.util.List;

@@ -1,14 +1,13 @@
 package com.example.springassignmentforum.core.service.impl;
 
 import com.example.springassignmentforum.core.dao.UserDAO;
-import com.example.springassignmentforum.core.dto.UserCreationDTO;
-import com.example.springassignmentforum.core.dto.UserDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserCreationDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
 import com.example.springassignmentforum.core.mapper.UserMapper;
 import com.example.springassignmentforum.core.model.UserModel;
 import com.example.springassignmentforum.core.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

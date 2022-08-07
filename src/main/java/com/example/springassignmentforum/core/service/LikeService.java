@@ -1,8 +1,7 @@
 package com.example.springassignmentforum.core.service;
 
-import com.example.springassignmentforum.core.dto.LikeCreationDTO;
-import com.example.springassignmentforum.core.dto.LikeDTO;
-import org.springframework.stereotype.Service;
+import com.example.springassignmentforum.core.dto.likeDTO.LikeCreationDTO;
+import com.example.springassignmentforum.core.dto.likeDTO.LikeDTO;
 
 
 public interface LikeService {

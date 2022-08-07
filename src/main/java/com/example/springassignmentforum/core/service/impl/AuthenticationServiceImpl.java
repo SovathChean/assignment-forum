@@ -7,7 +7,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springassignmentforum.core.common.helper.JwtAlgorithm;
 import com.example.springassignmentforum.core.common.helper.JwtCreateToken;
 import com.example.springassignmentforum.core.dao.OAuthTokenDAO;
-import com.example.springassignmentforum.core.dto.UserDTO;
+import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
 import com.example.springassignmentforum.core.model.OAuthTokenModel;
 import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.core.service.UserService;

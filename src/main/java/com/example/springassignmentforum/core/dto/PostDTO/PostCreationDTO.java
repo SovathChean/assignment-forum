@@ -1,4 +1,4 @@
-package com.example.springassignmentforum.core.dto;
+package com.example.springassignmentforum.core.dto.PostDTO;
 
 
 import com.example.springassignmentforum.core.model.UserModel;

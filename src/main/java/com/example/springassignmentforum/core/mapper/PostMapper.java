@@ -1,6 +1,6 @@
 package com.example.springassignmentforum.core.mapper;
 
-import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.dto.PostDTO.*;
 import com.example.springassignmentforum.core.model.PostModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

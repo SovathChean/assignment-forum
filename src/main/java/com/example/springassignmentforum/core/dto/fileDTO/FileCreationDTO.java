@@ -1,4 +1,4 @@
-package com.example.springassignmentforum.core.dto;
+package com.example.springassignmentforum.core.dto.fileDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

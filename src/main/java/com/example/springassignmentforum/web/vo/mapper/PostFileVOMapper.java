@@ -1,9 +1,8 @@
 package com.example.springassignmentforum.web.vo.mapper;
 
-import com.example.springassignmentforum.core.dto.PostFileDTO;
+import com.example.springassignmentforum.core.dto.PostDTO.PostFileDTO;
 import com.example.springassignmentforum.web.vo.response.PostUploadImageResponseVO;
 import org.mapstruct.Mapper;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 

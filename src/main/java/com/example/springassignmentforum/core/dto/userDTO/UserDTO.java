@@ -1,4 +1,4 @@
-package com.example.springassignmentforum.core.dto;
+package com.example.springassignmentforum.core.dto.userDTO;
 
 import com.example.springassignmentforum.core.model.UserModel;
 import lombok.AllArgsConstructor;
