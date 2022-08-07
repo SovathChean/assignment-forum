@@ -13,4 +13,5 @@ import java.util.List;
 public interface PostFileDAO extends JpaRepository<PostFileModel, Long> {
     @Query(nativeQuery = true)
     List<PostFileImageDTO> findFileDetailByPostId(Long postId, String path);
+    List<PostFileModel> findByFileId(Long fileId);
 }

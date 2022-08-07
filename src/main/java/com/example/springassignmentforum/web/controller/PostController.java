@@ -2,6 +2,7 @@ package com.example.springassignmentforum.web.controller;
 
 import com.example.springassignmentforum.core.common.filter.PageFilterResult;
 import com.example.springassignmentforum.core.dto.*;
+import com.example.springassignmentforum.core.mapper.PostImageMapper;
 import com.example.springassignmentforum.core.service.CommentService;
 import com.example.springassignmentforum.core.service.PostService;
 import com.example.springassignmentforum.core.service.UserService;
@@ -10,10 +11,14 @@ import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
 import com.example.springassignmentforum.web.handler.ResponsePageUtils;
+import com.example.springassignmentforum.web.vo.mapper.PostFileVOMapper;
 import com.example.springassignmentforum.web.vo.mapper.PostVOMapper;
 import com.example.springassignmentforum.web.vo.request.PostCreationRequestVO;
+import com.example.springassignmentforum.web.vo.request.PostUploadImageRequestVO;
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
+import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;
+import com.example.springassignmentforum.web.vo.response.PostUploadImageResponseVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,9 +28,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
-@RequestMapping(value="/api/posts")
 public class PostController {
     @Autowired
     private PostService postService;
@@ -33,13 +38,13 @@ public class PostController {
     private UserService userService;
     @Autowired
     private CommentService commentService;
-
+    
     public PostController(PostService postService, CommentService commentService)
     {
         this.postService = postService;
         this.commentService = commentService;
     }
-    @PostMapping
+    @PostMapping(value="/api/posts")
     public ResponseEntity<ResponseDataUtils<PostResponseVO>> createPost(@RequestBody PostCreationRequestVO postCreationRequestVO)
     {
         UserDTO userDTO = userService.getAuthByName();
@@ -50,7 +55,33 @@ public class PostController {
 
         return ResponseHandler.responseData("Create Post Successfully", HttpStatus.CREATED, postResponseVO);
     }
-    @GetMapping()
+    @PostMapping(value="/api/posts/{id}")
+    public ResponseEntity<ResponseDataUtils<PostResponseVO>> updatePost(@PathVariable(value="id") Long id, @RequestBody PostCreationRequestVO postCreationRequestVO)
+    {
+        PostCreationDTO postCreationDTO = PostVOMapper.INSTANCE.from(postCreationRequestVO);
+        PostDTO postDTO = postService.updatePost(id, postCreationDTO);
+        PostResponseVO postResponseVO = PostVOMapper.INSTANCE.to(postDTO);
+
+        return ResponseHandler.responseData("Update Post Successfully", HttpStatus.OK, postResponseVO);
+    }
+    @RequestMapping(value="/api/posts/upload-image/{id}", method = RequestMethod.POST)
+    public ResponseEntity<ResponseListDataUtils<PostUploadImageResponseVO>> uploadImage(@PathVariable(value="id") Long id, @RequestBody PostUploadImageRequestVO postUploadImageRequestVO)
+    {
+        PostUploadImageDTO postUploadImageDTO = PostImageMapper.INSTANCE.fromRequestToDTO(postUploadImageRequestVO);
+        List<PostFileDTO> postFileDTO = postService.uploadImage(id, postUploadImageDTO);
+        List<PostUploadImageResponseVO> postResponseVO = PostFileVOMapper.INSTANCE.fromDtoToResponseVO(postFileDTO);
+        return ResponseHandler.responseListData("Upload Image Successfully", HttpStatus.OK, postResponseVO);
+    }
+    @RequestMapping(value="/api/posts/delete-image/{id}", method = RequestMethod.POST)
+    public ResponseEntity<ResponseListDataUtils<PostUploadImageResponseVO>> deleteImage(@PathVariable(value="id") Long id, @RequestBody PostUploadImageRequestVO postUploadImageRequestVO)
+    {
+        PostUploadImageDTO postUploadImageDTO = PostImageMapper.INSTANCE.fromRequestToDTO(postUploadImageRequestVO);
+        List<PostFileDTO> postFileDTO = postService.deleteImage(id, postUploadImageDTO);
+        List<PostUploadImageResponseVO> postResponseVO = PostFileVOMapper.INSTANCE.fromDtoToResponseVO(postFileDTO);
+
+        return ResponseHandler.responseListData("Delete Image Successfully", HttpStatus.OK, postResponseVO);
+    }
+    @GetMapping(value="/api/posts")
     public ResponseEntity<ResponsePageUtils<PostResponseVO>> getAllPost(
             @RequestParam(value="fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDateTime,
             @RequestParam(value ="toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDateTime,
@@ -63,7 +94,7 @@ public class PostController {
 
         return ResponseHandler.responsePagination(null, HttpStatus.OK, res);
     }
-    @GetMapping(value="/{id}")
+    @GetMapping(value="/api/posts/{id}")
     public ResponseEntity<ResponseDataUtils<PostDetailResponseVO>> getPostById(@PathVariable(value="id") Long id)
     {
         PostDetailsDTO postDetailsDTO = postService.getPostDetail(id);
@@ -71,9 +102,8 @@ public class PostController {
 
         return ResponseHandler.responseData(null, HttpStatus.OK, postDetailResponseVO);
     }
-    @GetMapping(value="/owner")
+    @GetMapping(value="/api/posts/owner")
     public ResponseEntity<ResponsePageUtils<PostResponseVO>> getPostByCreatorId(
-
             @RequestParam(value="fromDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String fromDateTime,
             @RequestParam(value ="toDate", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String toDateTime,
             PostFilterCriteria postFilterCriteria

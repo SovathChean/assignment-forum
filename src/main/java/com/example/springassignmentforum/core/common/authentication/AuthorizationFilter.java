@@ -68,9 +68,18 @@ public class AuthorizationFilter extends OncePerRequestFilter {
                 }catch (Exception e)
                 {
                     log.error("Error login : {}", e);
+
                     Map<String, String> error = new HashMap<>();
                     error.put("error", e.getMessage().toString());
                     response.setContentType(APPLICATION_JSON_VALUE);
+                    if(request.getServletPath().equals("/api/login"))
+                    {
+                        response.setStatus(401);
+                    }
+                    else
+                    {
+                        response.setStatus(500);
+                    }
                     new ObjectMapper().writeValue(response.getOutputStream(), error);
                 }
             }else

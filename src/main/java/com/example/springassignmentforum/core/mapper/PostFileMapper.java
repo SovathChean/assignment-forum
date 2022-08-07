@@ -7,11 +7,12 @@ import com.example.springassignmentforum.web.vo.response.PostFileResponseVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostFileMapper {
     public final static  PostFileMapper INSTANCE = Mappers.getMapper(PostFileMapper.class);
     @Mapping(source = "postId", target = "post.id")
@@ -20,6 +21,8 @@ public interface PostFileMapper {
     PostFileModel to(PostFileDTO postFileDTO);
     @Mapping(source = "postId", target = "post.id")
     @Mapping(source = "file", target = "file.id")
-    @Mapping(target = "id", ignore = true)
     List<PostFileModel> toListProperty(List<PostFileDTO> postFileDTOList);
+    @Mapping(target = "postId", source = "post.id")
+    @Mapping(target = "file", source = "file.id")
+    List<PostFileDTO> fromListProperty(List<PostFileModel> postFileModels);
 }

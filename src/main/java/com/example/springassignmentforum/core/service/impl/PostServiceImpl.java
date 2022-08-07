@@ -63,10 +63,6 @@ public class PostServiceImpl implements PostService {
         postModel.setCreatedAt(LocalDateTime.now());
         try {
             postDAO.save(postModel);
-            if (postCreationDTO.getPhotos() != null) {
-                List<PostFileModel> postFileModels = this.getPostFileModel(postModel.getId(), postCreationDTO.getPhotos());
-                postFileDAO.saveAll(postFileModels);
-            }
             log.info("post is created {}:", postModel);
         }
         catch (Exception e)
@@ -109,6 +105,34 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public PostDTO updatePost(Long postId, PostCreationDTO postCreationDTO) {
+        PostModel postModel = postDAO.findById(postId).orElseThrow(() -> new RuntimeException("File doesn't exist."));;
+        postModel.setUpdatedAt(LocalDateTime.now());
+        postModel.setDescription(postCreationDTO.getDescription());
+        postModel.setSubject(postCreationDTO.getSubject());
+        postDAO.save(postModel);
+
+        return PostMapper.INSTANCE.fromProperty(postModel);
+    }
+    @Override
+    public List<PostFileDTO> uploadImage(Long postId, PostUploadImageDTO postUploadImageDTO) {
+
+        List<PostFileModel> postFileModels = this.getPostFileModel(postId, postUploadImageDTO.getPhotos());
+        postFileDAO.saveAll(postFileModels);
+
+        return PostFileMapper.INSTANCE.fromListProperty(postFileModels);
+    }
+    @Override
+    public List<PostFileDTO> deleteImage(Long postId, PostUploadImageDTO postUploadImageDTO) {
+        List<PostFileModel> postFileModels = this.getDeletePostFile(postUploadImageDTO.getPhotos());
+        postFileDAO.deleteAll(postFileModels);
+
+
+        return PostFileMapper.INSTANCE.fromListProperty(postFileModels);
+    }
+
+
+    @Override
     public PageFilterResult<PostPaginatedDTO> getAllPost(PostFilterCriteria postFilterCriteria) {
         List<PostPaginatedDTO> data = new ArrayList<>();
         Long totalRow = (long) 0;
@@ -137,5 +161,16 @@ public class PostServiceImpl implements PostService {
         }
         log.info("Get Store file");
         return PostFileMapper.INSTANCE.toListProperty(postFileDTOs);
+    }
+    public List<PostFileModel> getDeletePostFile(Long[] files)
+    {
+        List<PostFileModel> postFiles = new ArrayList<>();
+        for(Long fileId: files)
+        {
+            var postFileModels = postFileDAO.findByFileId(fileId);
+            if(postFileModels != null)
+                postFiles.addAll(postFileModels);
+        }
+        return postFiles;
     }
 }

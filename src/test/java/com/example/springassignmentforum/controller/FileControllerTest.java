@@ -38,5 +38,4 @@ public class FileControllerTest {
                 .getFile(url,  true);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
-
 }
