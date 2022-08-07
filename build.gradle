@@ -47,6 +47,7 @@ dependencies {
 	implementation 'org.springframework.security:spring-security-config:5.7.2'
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.7.2'
 	implementation group: 'com.auth0', name: 'java-jwt', version: '4.0.0'
+	implementation 'org.springframework:spring-mock:2.0.8'
 	// postgres
 	implementation "org.postgresql:postgresql:$postgresqlVersion"
 

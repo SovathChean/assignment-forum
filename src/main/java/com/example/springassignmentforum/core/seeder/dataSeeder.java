@@ -9,18 +9,19 @@ import com.example.springassignmentforum.core.mapper.UserMapper;
 import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.model.UserModel;
 import com.example.springassignmentforum.core.service.FileService;
-import com.example.springassignmentforum.core.service.UserService;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -71,19 +72,19 @@ public class dataSeeder {
             postDAO.saveAll(postModels);
         };
     }
-//    @Bean
-//    CommandLineRunner fileSeederRunning(FileService fileService) throws IOException {
-//        List<MultipartFile> files = new ArrayList<>();
-//        for(int i = 1; i<4; i++)
-//        {
-//            MultipartFile multipartFile = new MockMultipartFile(
-//                    "file.png",
-//                    new FileInputStream(Paths.get("uploads/files/file"+i+".png").toFile())
-//            );
-//            files.add(multipartFile);
-//        }
-//        return args -> {
-//            fileService.uploadListFile(files);
-//        };
-//    }
+    @Bean
+    CommandLineRunner fileSeederRunning(FileService fileService) throws IOException {
+        FileUtils.deleteDirectory(Paths.get("uploads").toFile());
+        List<MultipartFile> files = new ArrayList<>();
+        File file = new File("files/image.png");
+        MultipartFile multipartFile = new MockMultipartFile(
+                "file.png",
+                 new FileInputStream(file)
+        );
+        files.add(multipartFile);
+
+        return args -> {
+            fileService.uploadListFile(files);
+        };
+    }
 }

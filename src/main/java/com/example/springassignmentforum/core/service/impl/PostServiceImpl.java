@@ -86,20 +86,6 @@ public class PostServiceImpl implements PostService {
         return PostMapper.INSTANCE.fromProperty(postModel);
     }
     @Override
-    public  PageFilterResult<PostPaginatedDTO> getAllPostByCreatorId(Long userId) {
-        List<PostModel> postModels = postDAO.findAllPostByUser(userId);
-        UserDTO userDTO = userService.getAuthByName();
-        PostFilterCriteria postFilterCriteria = new PostFilterCriteria();
-        postFilterCriteria.setCreatorId(userDTO.getId());
-        postFilterCriteria.setFromDateTime(null);
-        postFilterCriteria.setToDateTime(null);
-        postFilterCriteria.setSearch(null);
-        postFilterCriteria.setPaginated(true);
-        PageFilterResult<PostPaginatedDTO> page = this.getAllPost(postFilterCriteria);
-
-        return page;
-    }
-    @Override
     public PostDetailsDTO getPostDetail(Long postId) {
         PostDetailsDTO postDetailsDTO = new PostDetailsDTO();
         PostDetailDTO postDetail = postDAO.findPostDetails(postId);

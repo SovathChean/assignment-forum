@@ -33,5 +33,13 @@ public class TestSubmitHelper<T, E> {
 
         return response;
     }
+    public ResponseEntity<String> getFile(String endpoint, Boolean auth)
+    {
+        TestRestTemplate testRestTemplate = new TestRestTemplate();
+        var request = HttpHelper.getFileHttpEntity(auth);
+        ResponseEntity<String> response =
+                testRestTemplate.exchange(endpoint, HttpMethod.GET, request, String.class);
 
+        return response;
+    }
 }

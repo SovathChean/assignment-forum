@@ -14,6 +14,11 @@ public class HttpHelper {
         httpHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         return new HttpEntity<>(httpHeaders);
     }
+    public static HttpEntity<String> getFileHttpEntity(Boolean auth) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if(auth) httpHeaders.setBearerAuth(getAccessToken());
+        return new HttpEntity<>(httpHeaders);
+    }
 
     public static <T> HttpEntity<T> getHttpEntity(T dto, Boolean auth) {
         HttpHeaders httpHeaders = new HttpHeaders();

@@ -11,7 +11,6 @@ public interface PostService {
 //    List<PostDTO> createPosts(List<PostCreationDTO> postCreationDTOS);
     PageFilterResult<PostPaginatedDTO> getAllPost(PostFilterCriteria postFilterCriteria);
     PostDTO getPostById(long id);
-    PageFilterResult<PostPaginatedDTO> getAllPostByCreatorId(Long id);
     PostDetailsDTO getPostDetail(Long postId);
     List<PostFileImageDTO> getPostFileImageByPostId(Long postId);
 

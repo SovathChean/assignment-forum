@@ -48,17 +48,17 @@ public class FileServiceImpl implements FileService {
     @Override
     public String storeFile(String folder, MultipartFile file)
     {
-        String fileName = file.getOriginalFilename().split("\\.")[0] + "." + getFileExtension(file.getOriginalFilename());
+        String fileName = file.getOriginalFilename().isBlank() ? file.getName() : file.getOriginalFilename();
         createFileDirectory(folder);
         try
             {
                 Path targetLocation = this.fileStorageLocation.resolve(fileName);
-                Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
+                Files.copy(file.getInputStream(), targetLocation);
                 return fileName;
             }
         catch (IOException ex)
             {
+                System.out.println(ex);
                 throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
             }
     }
@@ -67,6 +67,7 @@ public class FileServiceImpl implements FileService {
     public List<FileModel> uploadListFile(List<MultipartFile> files) {
         List<FileModel> fileModels = new ArrayList<>();
         LocalDateTime createdAt = LocalDateTime.now();
+
         for(MultipartFile file: files)
         {
             FileModel fileModel = new FileModel();
