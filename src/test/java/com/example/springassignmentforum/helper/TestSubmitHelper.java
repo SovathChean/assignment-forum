@@ -5,9 +5,9 @@ import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
 
 @Component
 @Data
@@ -40,6 +40,17 @@ public class TestSubmitHelper<T, E> {
         ResponseEntity<String> response =
                 testRestTemplate.exchange(endpoint, HttpMethod.GET, request, String.class);
 
+        return response;
+    }
+    public ResponseEntity<String> submitFile(String endpoint, LinkedMultiValueMap<String, Object> body,  HttpMethod method)
+    {
+        TestRestTemplate testRestTemplate = new TestRestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+        HttpEntity<LinkedMultiValueMap<String, Object>> request = new HttpEntity<LinkedMultiValueMap<String, Object>>(body, headers);
+
+        ResponseEntity<String> response =
+                testRestTemplate.exchange(endpoint, method, request, String.class);
         return response;
     }
 }

@@ -67,7 +67,7 @@ public class FileServiceImpl implements FileService {
     public List<FileModel> uploadListFile(List<MultipartFile> files) {
         List<FileModel> fileModels = new ArrayList<>();
         LocalDateTime createdAt = LocalDateTime.now();
-
+        System.out.println(files);
         for(MultipartFile file: files)
         {
             FileModel fileModel = new FileModel();
