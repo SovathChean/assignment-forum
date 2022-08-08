@@ -11,12 +11,14 @@ import com.example.springassignmentforum.core.mapper.PostLikeMapper;
 import com.example.springassignmentforum.core.model.LikeModel;
 import com.example.springassignmentforum.core.model.PostLikeModel;
 import com.example.springassignmentforum.core.service.LikeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 public class LikeServiceImpl implements LikeService {
     @Autowired(required = false)
     private LikeDAO likeDAO;
@@ -47,7 +49,7 @@ public class LikeServiceImpl implements LikeService {
             }
             postLikeModel.setLikes(incrementLike);
         }
-
+        log.info("Create like");
 
         LikeModel likeModel = LikeMapper.INSTANCE.toProperty(likeDTO);
         likeModel.setPosts(postDAO.findById(postId).get());

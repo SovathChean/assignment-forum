@@ -3,6 +3,7 @@ package com.example.springassignmentforum.core.service.impl;
 import com.example.springassignmentforum.core.dao.FileDAO;
 import com.example.springassignmentforum.core.model.FileModel;
 import com.example.springassignmentforum.core.service.FileService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class FileServiceImpl implements FileService {
     private static final String fileRootDirectory = "./uploads/files/";
     private Path fileStorageLocation;
@@ -50,11 +52,11 @@ public class FileServiceImpl implements FileService {
             {
                 Path targetLocation = this.fileStorageLocation.resolve(fileName);
                 Files.copy(file.getInputStream(), targetLocation);
+
                 return fileName;
             }
         catch (IOException ex)
             {
-                System.out.println(ex);
                 throw new RuntimeException("Could not store file " + fileName + ". Please try again!", ex);
             }
     }
@@ -63,7 +65,6 @@ public class FileServiceImpl implements FileService {
     public List<FileModel> uploadListFile(List<MultipartFile> files) {
         List<FileModel> fileModels = new ArrayList<>();
         LocalDateTime createdAt = LocalDateTime.now();
-        System.out.println(files);
         for(MultipartFile file: files)
         {
             FileModel fileModel = new FileModel();
@@ -75,6 +76,7 @@ public class FileServiceImpl implements FileService {
             fileModel.setIsUsed(true);
             fileModels.add(fileModel);
         }
+        log.info("Save all file");
         List<FileModel> saveFiles =  fileDAO.saveAll(fileModels);
 
         return saveFiles;
@@ -82,7 +84,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public FileModel getFileModel(Long id) {
-
+        log.info("Get file");
         FileModel file = fileDAO.findById(id).orElseThrow(() -> new RuntimeException("Data not found."));
 
         return file;

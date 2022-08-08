@@ -21,7 +21,7 @@ public class FilterUtils {
         String filterCriteriaString = StringUtils.isNotBlank(filterRequest.getFilterCriteriaString())
                 ? filterRequest.getFilterCriteriaString()
                 : "{}";
-        System.out.println(filterCriteriaString);
+
         T filterCriteria = JsonUtils.parse(filterCriteriaString, searchClass);
         filterCriteria.setPageNo(filterRequest.getPageNo());
         filterCriteria.setPageSize(filterRequest.getPageSize());

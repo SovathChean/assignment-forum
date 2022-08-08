@@ -30,11 +30,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDTO register(UserCreationDTO userCreationDTO) {
-		log.info("Save User");
 		UserDTO userDTO = UserMapper.INSTANCE.from(userCreationDTO);
 		UserModel userModel = UserMapper.INSTANCE.toProperty(userDTO);
 		userModel.setPassword(new BCryptPasswordEncoder().encode(userModel.getPassword()));
         userDao.save(userModel);
+		log.info("Save User");
 		return userDTO;
 	}
 
@@ -53,7 +53,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDTO getUserByName(String name) {
-		System.out.println(name);
 		UserModel user = userDao.findUserByName(name);
 
 		return UserMapper.INSTANCE.fromProperty(user);

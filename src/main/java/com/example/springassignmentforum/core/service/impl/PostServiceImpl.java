@@ -86,6 +86,7 @@ public class PostServiceImpl implements PostService {
         postDetailsDTO.setIsLike(postLikeCount);
         postDetailsDTO.setImages(FileVOMapper.INSTANCE.toListPostFile(postFileImageDTOS));
         postDetailsDTO.setComments(CommentVOMapper.INSTANCE.toListPostCommentResponse(postCommentDTO));
+        log.info("Get post detail");
 
         return postDetailsDTO;
     }
@@ -105,12 +106,12 @@ public class PostServiceImpl implements PostService {
         postModel.setDescription(postCreationDTO.getDescription());
         postModel.setSubject(postCreationDTO.getSubject());
         postDAO.save(postModel);
-
+        log.info("Update posted");
         return PostMapper.INSTANCE.fromProperty(postModel);
     }
     @Override
     public List<PostFileDTO> uploadImage(Long postId, PostUploadImageDTO postUploadImageDTO) {
-
+        log.info("Upload image from post");
         List<PostFileModel> postFileModels = this.getPostFileModel(postId, postUploadImageDTO.getPhotos());
         postFileDAO.saveAll(postFileModels);
 
@@ -118,6 +119,7 @@ public class PostServiceImpl implements PostService {
     }
     @Override
     public List<PostFileDTO> deleteImage(Long postId, PostUploadImageDTO postUploadImageDTO) {
+        log.info("Delete image from post");
         List<PostFileModel> postFileModels = this.getDeletePostFile(postUploadImageDTO.getPhotos());
         postFileDAO.deleteAll(postFileModels);
 
@@ -132,6 +134,7 @@ public class PostServiceImpl implements PostService {
         Long totalRow = (long) 0;
         if(!postFilterCriteria.getPaginated())
         {
+            log.info("Get All Post");
             data = PostMapper.INSTANCE.fromPostEntityToPaginatedResponse(postDAO.findAll());
             totalRow = postDAO.count();
             return new PageFilterResult<PostPaginatedDTO>(totalRow, data);
@@ -139,6 +142,7 @@ public class PostServiceImpl implements PostService {
         Integer offset =( postFilterCriteria.getPageNo() - 1 ) * postFilterCriteria.getPageSize();
         List<PostPaginatedDTO> postDTOList = postDAO.findAllPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), postFilterCriteria.getCreatorId(), postFilterCriteria.getPageSize(), offset);
         PostCountFilterDto postCountFilterDto = postDAO.findTotalRowPostFilters(postFilterCriteria.getSearch(), postFilterCriteria.getFromDateTime(), postFilterCriteria.getToDateTime(), postFilterCriteria.getCreatorId());
+        log.info("Get Paginated Post");
         return new PageFilterResult<>(postCountFilterDto.getTotalRow(), postDTOList);
     }
 

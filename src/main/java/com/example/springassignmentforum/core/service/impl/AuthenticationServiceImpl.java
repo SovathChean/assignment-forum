@@ -46,6 +46,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 hasRevokeToken(decodedJWT.getClaim("tokenKey").asString());
                 UserDTO user = userService.getUserByName(username);
                 oauthToken = new JwtCreateToken().createTokens(request, user.getName(), uniqueKey);
+                log.info("Get refresh token");
             }catch (Exception e)
             {
                 log.error("Error token : {}", e);
