@@ -21,11 +21,6 @@ import java.util.UUID;
 public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
-
-    public AuthenticationController(AuthenticationService authenticationService)
-    {
-        this.authenticationService = authenticationService;
-    }
     @GetMapping(value="/api/refreshToken")
     public ResponseEntity<ResponseDataUtils<OAuthTokenResponseVO>> getRefreshToken(HttpServletRequest request, HttpServletResponse response)
     {

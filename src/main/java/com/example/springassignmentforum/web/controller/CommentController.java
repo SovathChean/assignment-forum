@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     @Autowired
     private CommentService commentService;
-    public CommentController(CommentService commentService)
-    {
-        this.commentService = commentService;
-    }
     @PostMapping
     public ResponseEntity<ResponseDataUtils<CommentResponseVO>> createComment(@RequestBody CommentCreationRequestVO commentCreationRequestVO)
     {

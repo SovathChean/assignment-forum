@@ -37,12 +37,6 @@ public class PostController {
     private UserService userService;
     @Autowired
     private CommentService commentService;
-    
-    public PostController(PostService postService, CommentService commentService)
-    {
-        this.postService = postService;
-        this.commentService = commentService;
-    }
     @PostMapping(value="/api/posts")
     public ResponseEntity<ResponseDataUtils<PostResponseVO>> createPost(@RequestBody PostCreationRequestVO postCreationRequestVO)
     {

@@ -14,6 +14,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PostControllerTest {
@@ -39,20 +41,17 @@ public class PostControllerTest {
                 .submitSingleDataResponse(url, postCreationRequestVO, PostResponseVO.class, HttpMethod.POST, true);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertNotNull(response.getBody().getData());
-        assertEquals(Subject, response.getBody().getData().getSubject());
+        assertEquals(Subject, Objects.requireNonNull(response.getBody()).getData().getSubject());
         assertEquals(Description, response.getBody().getData().getDescription());
     }
     @Test
-    public void should_find_pagintaion_post()
+    public void should_find_pagination_post()
     {
         String url = String.format(PostURI, port);
         ResponseEntity<ResponseListDataUtils<PostResponseVO>> response = new TestSubmitHelper<>()
                 .submitListDataResponse(url, null, PostResponseVO.class, HttpMethod.GET, true);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertNotNull(response.getBody().getData());
     }
     @Test
     public void should_find_post_id()
@@ -62,8 +61,7 @@ public class PostControllerTest {
                 .submitSingleDataResponse(url, null, PostDetailResponseVO.class, HttpMethod.GET, true);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertNotNull(response.getBody().getData());
+        assertNotNull(Objects.requireNonNull(response.getBody()).getData());
         assertNotNull(response.getBody().getData().getDescription());
         assertNotNull(response.getBody().getData().getSubject());
         assertNotNull(response.getBody().getData().getCreator());
@@ -78,8 +76,7 @@ public class PostControllerTest {
                 .submitListDataResponse(url, null, PostResponseVO.class, HttpMethod.GET, true);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
-        assertNotNull(response.getBody().getData());
+        assertNotNull(Objects.requireNonNull(response.getBody()).getData());
     }
     @Test
     public void should_update_post()
@@ -90,8 +87,7 @@ public class PostControllerTest {
                 .submitSingleDataResponse(url, postCreationRequestVO, PostResponseVO.class, HttpMethod.POST, true);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody().getData());
-        assertEquals(UpdateSubject, response.getBody().getData().getSubject());
+        assertEquals(UpdateSubject, Objects.requireNonNull(response.getBody()).getData().getSubject());
         assertEquals(UpdateDescription, response.getBody().getData().getDescription());
     }
     @Test
@@ -103,7 +99,6 @@ public class PostControllerTest {
                 .submitListDataResponse(url, postUploadImageRequestVO, PostUploadImageResponseVO.class, HttpMethod.POST, true);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody().getData());
     }
     @Test
     public void should_delete_image()
@@ -114,7 +109,6 @@ public class PostControllerTest {
                 .submitListDataResponse(url, postUploadImageRequestVO, PostUploadImageResponseVO.class, HttpMethod.POST, true);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody().getData());
     }
 
     public PostCreationRequestVO createPostRequest()

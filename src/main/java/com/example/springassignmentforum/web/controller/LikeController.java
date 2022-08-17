@@ -20,10 +20,6 @@ public class LikeController {
     private LikeService likeService;
     @Autowired(required = false)
     private UserService userService;
-    public LikeController(LikeService likeService)
-    {
-        this.likeService = likeService;
-    }
     @PostMapping
     public ResponseEntity<Object> createLike( @RequestBody LikeCreationRequestVO likeCreationRequestVO)
     {

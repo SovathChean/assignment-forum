@@ -28,11 +28,6 @@ public class UserController {
     private UserService userService;
     @Autowired
     private AuthenticationService authenticationService;
-    public UserController(UserService userService, AuthenticationService authenticationService)
-    {
-        this.userService = userService;
-        this.authenticationService = authenticationService;
-    }
 
     @RequestMapping(value="/api/register", method = RequestMethod.POST)
     public ResponseEntity<ResponseDataUtils<OAuthTokenResponseVO>> register(HttpServletRequest request, HttpServletResponse httpRes, @RequestBody UserCreationRequestVO userCreationRequestVO)

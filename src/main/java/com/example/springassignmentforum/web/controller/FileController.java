@@ -18,13 +18,8 @@ import java.util.List;
 public class FileController {
     @Autowired
     private FileService fileService;
-
-    public FileController(FileService fileService)
-    {
-        this.fileService = fileService;
-    }
     @PostMapping
-    public ResponseEntity<ResponseListDataUtils<FileModel>> uploadFile(FileCreationRequestVO fileCreationRequestVO)
+    public ResponseEntity<ResponseListDataUtils<FileModel>> uploadFile(@RequestBody  FileCreationRequestVO fileCreationRequestVO)
     {
         List<FileModel> fileModels =  fileService.uploadListFile(fileCreationRequestVO.getFiles());
 

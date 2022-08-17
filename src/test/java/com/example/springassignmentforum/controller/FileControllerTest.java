@@ -10,7 +10,6 @@ import org.springframework.util.LinkedMultiValueMap;
 
 import java.io.File;
 
-import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,10 +19,10 @@ public class FileControllerTest {
     private final int port = 8080;
 
     @Test
-    public void should_upload_file() throws IOException {
+    public void should_upload_file() {
         String url = String.format(FileUri, port);
         var file = new File("files/image.png");
-        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<String, Object>();
+        LinkedMultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         var uploadFile = new FileSystemResource(file);
         parameters.add("files", uploadFile);
         ResponseEntity<String> response = new TestSubmitHelper<>()

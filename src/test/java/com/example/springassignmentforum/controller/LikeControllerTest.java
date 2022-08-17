@@ -9,6 +9,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Objects;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,16 +20,17 @@ public class LikeControllerTest {
     private static final Boolean isLike = true;
     private static final Long postId = (long) 12;
     private static final  Long creatorId = (long) 1;
-    private final int port = 8080;
+
     @Test
     public void should_create_like()
     {
+        int port = 8080;
         String url = String.format(LikeUri, port);
         LikeCreationDTO likeCreationDTO = createLikeRequest();
         ResponseEntity<ResponseDataUtils<Object>> response = new TestSubmitHelper<>()
                 .submitSingleDataResponse(url, likeCreationDTO, Object.class, HttpMethod.POST, true);
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertNotNull(response.getBody());
+        assertNotNull(Objects.requireNonNull(response.getBody()));
     }
     public LikeCreationDTO createLikeRequest()
     {
