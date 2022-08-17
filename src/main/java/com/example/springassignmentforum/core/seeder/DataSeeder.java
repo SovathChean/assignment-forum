@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class dataSeeder {
+public class DataSeeder {
     @Autowired
     private UserDAO userDAO;
     @Autowired

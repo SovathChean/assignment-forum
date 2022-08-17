@@ -1,5 +1,6 @@
 package com.example.springassignmentforum.web.controller;
 
+import com.example.springassignmentforum.core.common.exception.ResponseNotFound;
 import com.example.springassignmentforum.core.common.filter.PageFilterResult;
 import com.example.springassignmentforum.core.dto.PostDTO.*;
 import com.example.springassignmentforum.core.dto.userDTO.UserDTO;
