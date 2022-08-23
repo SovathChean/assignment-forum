@@ -14,7 +14,7 @@ import java.util.List;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CommentVOMapper {
-    public static final CommentVOMapper INSTANCE = Mappers.getMapper(CommentVOMapper.class);
+    CommentVOMapper INSTANCE = Mappers.getMapper(CommentVOMapper.class);
     CommentCreationDTO to(CommentCreationRequestVO commentCreationRequestVO);
     CommentResponseVO from(CommentDTO commentDTO);
     List<CommentResponseVO> toList(List<CommentDTO> commentDTO);

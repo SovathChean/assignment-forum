@@ -23,7 +23,7 @@ public class CommentController {
     @PostMapping
     public ResponseEntity<ResponseDataUtils<CommentResponseVO>> createComment(@RequestBody CommentCreationRequestVO commentCreationRequestVO)
     {
-        Long userId = new Long(1); //getIdFromAuth
+        Long userId = 1L; //getIdFromAuth
         commentCreationRequestVO.setUserId(userId);
         CommentCreationDTO commentCreationDTO = CommentVOMapper.INSTANCE.to(commentCreationRequestVO);
         CommentDTO comment = commentService.createComment(commentCreationDTO);

@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostLikeMapper {
-    public static final PostLikeMapper INSTANCE = Mappers.getMapper(PostLikeMapper.class);
+    PostLikeMapper INSTANCE = Mappers.getMapper(PostLikeMapper.class);
     @Mapping(target = "postId", source = "post.id")
     PostLikeDTO fromProperty(PostLikeModel postLikeModel);
     @Mapping(source = "postId", target = "post.id")

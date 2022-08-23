@@ -18,7 +18,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleNotFound(
             RuntimeException ex, WebRequest request) {
         ErrorResponseVO error = new ErrorResponseVO();
-        String bodyOfResponse = ex.getMessage().toString();
+        String bodyOfResponse = ex.getMessage();
         error.setError(bodyOfResponse);
         error.setSuccess(false);
         return handleExceptionInternal(ex, error,

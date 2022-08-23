@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostMapper {
-    public static final PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
+    PostMapper INSTANCE = Mappers.getMapper(PostMapper.class);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
@@ -21,8 +21,6 @@ public interface PostMapper {
     PostDTO from(PostCreationDTO postCreationDTO);
     PostModel toProperty(PostDTO postDTO);
     PostDTO fromProperty(PostModel postModel);
-
-    List<PostDTO> fromListProperty(Collection<PostModel> postModels);
     List<PostPaginatedDTO> fromPostEntityToPaginatedResponse(Collection<PostModel> postModels);
     PostDetailsDTO toPostDetails(PostDetailDTO postDetailDTO);
     List<PostModel> fromPostCreationToPostModel(List<PostCreationDTO> postCreationDTOS);

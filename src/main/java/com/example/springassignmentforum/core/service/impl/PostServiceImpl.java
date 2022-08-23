@@ -101,7 +101,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO updatePost(Long postId, PostCreationDTO postCreationDTO) {
-        PostModel postModel = postDAO.findById(postId).orElseThrow(() -> new RuntimeException("File doesn't exist."));;
+        PostModel postModel = postDAO.findById(postId).orElseThrow(() -> new RuntimeException("File doesn't exist."));
         postModel.setUpdatedAt(LocalDateTime.now());
         postModel.setDescription(postCreationDTO.getDescription());
         postModel.setSubject(postCreationDTO.getSubject());

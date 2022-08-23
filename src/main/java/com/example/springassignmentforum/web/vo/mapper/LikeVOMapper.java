@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface LikeVOMapper {
-    public static final LikeVOMapper INSTANCE = Mappers.getMapper(LikeVOMapper.class);
+    LikeVOMapper INSTANCE = Mappers.getMapper(LikeVOMapper.class);
 
 
     LikeCreationDTO to(LikeCreationRequestVO likeCreationRequestVO);

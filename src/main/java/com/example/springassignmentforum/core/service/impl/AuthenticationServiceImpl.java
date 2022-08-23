@@ -49,7 +49,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 log.info("Get refresh token");
             }catch (Exception e)
             {
-                log.error("Error token : {}", e);
+                log.error("Error token: {}", e);
                 res.put("error", "AccessToken is invalid or expire");
             }
         }

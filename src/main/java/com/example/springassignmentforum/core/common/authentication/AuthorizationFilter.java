@@ -10,9 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -30,7 +28,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Slf4j
 public class AuthorizationFilter extends OncePerRequestFilter {
     @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
     public AuthorizationFilter(AuthenticationService authenticationService)
     {
         this.authenticationService = authenticationService;
@@ -67,10 +65,8 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
                 }catch (Exception e)
                 {
-                    log.error("Error login : {}", e);
-
                     Map<String, String> error = new HashMap<>();
-                    error.put("error", e.getMessage().toString());
+                    error.put("error", e.getMessage());
                     response.setContentType(APPLICATION_JSON_VALUE);
                     if(request.getServletPath().equals("/api/login"))
                     {

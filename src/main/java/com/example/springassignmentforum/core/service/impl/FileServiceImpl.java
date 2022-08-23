@@ -24,7 +24,7 @@ public class FileServiceImpl implements FileService {
     private FileDAO fileDAO;
     @Override
     public void createFileDirectory(String folder) {
-        this.fileStorageLocation = Paths.get(this.fileRootDirectory + folder + "/")
+        this.fileStorageLocation = Paths.get(fileRootDirectory + folder + "/")
                                         .toAbsolutePath().normalize();
         try {
             Files.createDirectories(this.fileStorageLocation);

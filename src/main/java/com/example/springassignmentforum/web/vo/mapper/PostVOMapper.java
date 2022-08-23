@@ -15,7 +15,7 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostVOMapper {
-    public static final PostVOMapper INSTANCE = Mappers.getMapper(PostVOMapper.class);
+    PostVOMapper INSTANCE = Mappers.getMapper(PostVOMapper.class);
     PostCreationDTO from(PostCreationRequestVO postCreationRequestVO);
     PostResponseVO to(PostDTO postDTO);
     List<PostResponseVO> toList(List<PostDTO> postDTOList);

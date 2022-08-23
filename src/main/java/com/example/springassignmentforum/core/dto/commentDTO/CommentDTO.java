@@ -1,6 +1,5 @@
 package com.example.springassignmentforum.core.dto.commentDTO;
 
-import com.example.springassignmentforum.core.model.CommentModel;
 import com.example.springassignmentforum.core.model.PostModel;
 import com.example.springassignmentforum.core.model.UserModel;
 import com.fasterxml.jackson.annotation.JsonFormat;

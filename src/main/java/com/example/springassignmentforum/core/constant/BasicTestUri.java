@@ -11,7 +11,7 @@ public enum BasicTestUri {
     COMMENT("comments"),
     USER_URI("users");
     public final String label;
-    private BasicTestUri(String label) {
+    BasicTestUri(String label) {
         this.label = label;
     }
 }

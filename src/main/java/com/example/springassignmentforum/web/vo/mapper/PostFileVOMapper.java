@@ -10,6 +10,6 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostFileVOMapper {
-    public static final  PostFileVOMapper INSTANCE = Mappers.getMapper(PostFileVOMapper.class);
+    PostFileVOMapper INSTANCE = Mappers.getMapper(PostFileVOMapper.class);
     List<PostUploadImageResponseVO> fromDtoToResponseVO(List<PostFileDTO> postFileDTOList);
 }

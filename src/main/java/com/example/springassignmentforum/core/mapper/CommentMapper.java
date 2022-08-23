@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface CommentMapper {
-    public static  final CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
+    CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -22,5 +22,4 @@ public interface CommentMapper {
     CommentDTO from(CommentCreationDTO commentCreationDTO);
     CommentModel toProperty(CommentDTO commentDTO);
     CommentDTO fromProperty(CommentModel commentModel);
-    List<CommentDTO> toListProperty(List<CommentModel> commentModelList);
 }

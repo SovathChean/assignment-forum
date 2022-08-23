@@ -8,11 +8,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface LikeMapper {
-    public static final LikeMapper INSTANCE = Mappers.getMapper(LikeMapper.class);
+    LikeMapper INSTANCE = Mappers.getMapper(LikeMapper.class);
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
@@ -21,5 +20,4 @@ public interface LikeMapper {
     LikeDTO from(LikeCreationDTO likeCreationDTO);
     LikeModel toProperty(LikeDTO likeDTO);
     LikeDTO fromProperty(LikeModel likeModel);
-    List<LikeDTO> fromListProperty(List<LikeModel> likeModelList);
 }

@@ -8,7 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface PostImageMapper {
-    public static final PostImageMapper INSTANCE = Mappers.getMapper(PostImageMapper.class);
+    PostImageMapper INSTANCE = Mappers.getMapper(PostImageMapper.class);
 
     PostUploadImageDTO fromRequestToDTO(PostUploadImageRequestVO postUploadImageRequestVO);
 

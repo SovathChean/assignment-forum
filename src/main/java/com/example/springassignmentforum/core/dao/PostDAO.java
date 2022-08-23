@@ -13,7 +13,6 @@ import java.util.List;
 
 @Repository
 public interface PostDAO extends JpaRepository<PostModel, Long> {
-    List<PostModel> findAllPostByUser(Long userId);
     @Query(nativeQuery = true)
     PostDetailDTO findPostDetails(Long postId);
     @Query(nativeQuery = true)

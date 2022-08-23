@@ -11,7 +11,7 @@ import java.util.List;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PostFileMapper {
-    public final static  PostFileMapper INSTANCE = Mappers.getMapper(PostFileMapper.class);
+    PostFileMapper INSTANCE = Mappers.getMapper(PostFileMapper.class);
     @Mapping(source = "postId", target = "post.id")
     @Mapping(source = "fileId", target = "file.id")
     @Mapping(target = "id", ignore = true)

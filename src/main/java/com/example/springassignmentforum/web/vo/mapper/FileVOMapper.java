@@ -10,6 +10,6 @@ import java.util.List;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface FileVOMapper {
-    public final static  FileVOMapper INSTANCE = Mappers.getMapper(FileVOMapper.class);
+    FileVOMapper INSTANCE = Mappers.getMapper(FileVOMapper.class);
     List<PostFileResponseVO> toListPostFile(List<PostFileImageDTO> postFileImageDTOS);
 }

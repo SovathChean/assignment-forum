@@ -3,10 +3,6 @@ package com.example.springassignmentforum.core.common.filter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Optional;
 
 @Data
 @AllArgsConstructor

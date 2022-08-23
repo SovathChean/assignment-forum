@@ -13,7 +13,7 @@ import java.util.List;
 
 @Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface UserVOMapper {
-    public static final UserVOMapper INSTANCE = Mappers.getMapper(UserVOMapper.class);
+    UserVOMapper INSTANCE = Mappers.getMapper(UserVOMapper.class);
     UserCreationDTO from (UserCreationRequestVO userCreationRequestVO);
     UserResponseVO to (UserDTO userDTO);
     List<UserResponseVO> toList(List<UserDTO> userDTOList);
