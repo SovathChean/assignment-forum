@@ -8,6 +8,7 @@ import com.example.springassignmentforum.core.service.UserService;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.vo.mapper.LikeVOMapper;
 import com.example.springassignmentforum.web.vo.request.LikeCreationRequestVO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value="/api/like")
+@SecurityRequirement(name = "bearerAuth")
 public class LikeController {
     @Autowired(required = false)
     private LikeService likeService;

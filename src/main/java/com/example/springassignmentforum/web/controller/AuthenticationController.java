@@ -4,6 +4,8 @@ import com.example.springassignmentforum.core.service.AuthenticationService;
 import com.example.springassignmentforum.web.handler.ResponseDataUtils;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping
+
 public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
@@ -31,6 +34,7 @@ public class AuthenticationController {
         return ResponseHandler.responseData(null, HttpStatus.OK, token);
     }
     @GetMapping(value="/api/logout")
+    @Operation(summary = "Logout User", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<Object> getLogout(HttpServletRequest request, HttpServletResponse response)
     {
         authenticationService.logout(request, response);

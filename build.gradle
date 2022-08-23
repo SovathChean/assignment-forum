@@ -60,7 +60,7 @@ dependencies {
 	implementation 'org.apache.httpcomponents:httpclient'
 
 	// swagger
-//	implementation "org.springdoc:springdoc-openapi-ui:$springdocVersion"
+	implementation "org.springdoc:springdoc-openapi-ui:$springdocVersion"
 
 	// Java Bean mapper
 	implementation "org.mapstruct:mapstruct:$mapstructVersion"

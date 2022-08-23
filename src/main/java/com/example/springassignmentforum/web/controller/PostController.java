@@ -20,6 +20,7 @@ import com.example.springassignmentforum.web.vo.request.PostUploadImageRequestVO
 import com.example.springassignmentforum.web.vo.response.PostDetailResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostResponseVO;
 import com.example.springassignmentforum.web.vo.response.PostUploadImageResponseVO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class PostController {
     @Autowired
     private PostService postService;

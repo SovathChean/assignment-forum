@@ -5,6 +5,7 @@ import com.example.springassignmentforum.core.service.FileService;
 import com.example.springassignmentforum.web.handler.ResponseHandler;
 import com.example.springassignmentforum.web.handler.ResponseListDataUtils;
 import com.example.springassignmentforum.web.vo.request.FileCreationRequestVO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/file")
+@SecurityRequirement(name = "bearerAuth")
 public class FileController {
     @Autowired
     private FileService fileService;

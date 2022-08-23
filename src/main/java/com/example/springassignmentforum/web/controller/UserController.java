@@ -12,6 +12,8 @@ import com.example.springassignmentforum.web.vo.mapper.UserVOMapper;
 import com.example.springassignmentforum.web.vo.request.UserCreationRequestVO;
 import com.example.springassignmentforum.web.vo.response.OAuthTokenResponseVO;
 import com.example.springassignmentforum.web.vo.response.UserResponseVO;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +35,7 @@ public class UserController {
     public ResponseEntity<ResponseDataUtils<OAuthTokenResponseVO>> register(HttpServletRequest request, HttpServletResponse httpRes, @RequestBody UserCreationRequestVO userCreationRequestVO)
     {
         UserCreationDTO userCreationDTO = UserVOMapper.INSTANCE.from(userCreationRequestVO);
+        System.out.println(userCreationDTO);
         UserDTO register = userService.register(userCreationDTO);
         UserResponseVO response = UserVOMapper.INSTANCE.to(register);
         String uniqueKey = UUID.randomUUID().toString();
@@ -42,6 +45,7 @@ public class UserController {
         return ResponseHandler.responseData("Create User Successfully!", HttpStatus.CREATED, tokens);
     }
     @RequestMapping(value="/api/users/{id}", method = RequestMethod.GET)
+    @Operation(summary = "Get UserById", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<ResponseDataUtils<UserResponseVO>> getUserById(@PathVariable(value="id") Long id)
     {
         UserDTO userDTO = userService.findById(id);
@@ -49,6 +53,7 @@ public class UserController {
         return ResponseHandler.responseData(null, HttpStatus.OK, res);
     }
     @RequestMapping(value="/api/users", method = RequestMethod.GET)
+    @Operation(summary = "Get ListOfUsers", security = @SecurityRequirement(name = "bearerAuth"))
     public ResponseEntity<ResponseListDataUtils<UserResponseVO>> getAllUsers()
     {
         List<UserDTO> userDTO = userService.findAll();
